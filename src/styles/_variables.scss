@@ -1,0 +1,102 @@
+$border-color: #f2f2f2;
+$border-color-dark: #000;
+$border-radius: 5px;
+$border-radius-big: 10px;
+$font-color: #bcbcbd;
+$font-color-dark: rgba(255, 255, 255, 0.7);
+$body-font-family: 'Lato', sans-serif;
+.border-top-2 {
+	border-top: 2px solid;
+}
+.border-right-2 {
+	border-right: 2px solid;
+}
+.theme--light {
+	tr {
+		background: #f9f9f9;
+		border-bottom: 2px solid #fff;
+	}
+	.border-color {
+		border-color: $border-color !important;
+	}
+	.back {
+		background-color: $border-color !important;
+	}
+	.color {
+		color: $font-color !important;
+	}
+}
+
+.theme--dark {
+	.border-color {
+		border-color: $border-color-dark !important;
+	}
+	.back {
+		background-color: $border-color-dark !important;
+	}
+	.color {
+		color: $font-color-dark !important;
+	}
+}
+
+.border-radius {
+	border-radius: $border-radius !important;
+	-webkit-border-radius: $border-radius !important;
+	-moz-border-radius: $border-radius !important;
+	-ms-border-radius: $border-radius !important;
+	-o-border-radius: $border-radius !important;
+}
+.border-radius-big {
+	border-radius: $border-radius-big;
+	-webkit-border-radius: $border-radius-big;
+	-moz-border-radius: $border-radius-big;
+	-ms-border-radius: $border-radius-big;
+	-o-border-radius: $border-radius-big;
+}
+.link {
+	cursor: pointer;
+}
+.full {
+	max-height: 100% !important;
+}
+.w-100 {
+	width: 100%;
+}
+
+.border-radius-8 {
+	border-radius: 8px !important;
+	-webkit-border-radius: 8px !important;
+	-moz-border-radius: 8px !important;
+	-ms-border-radius: 8px !important;
+	-o-border-radius: 8px !important;
+}
+.border-radius-15 {
+	border-radius: 15px !important;
+	-webkit-border-radius: 15px !important;
+	-moz-border-radius: 15px !important;
+	-ms-border-radius: 15px !important;
+	-o-border-radius: 15px !important;
+}
+.customLink {
+	text-decoration: none !important;
+}
+.max-width-400 {
+	max-width: 400px;
+}
+table {
+	border-collapse: collapse;
+}
+thead {
+	background: var(--v-primary-base);
+	tr {
+		background: var(--v-primary-base) !important;
+		th {
+			color: #fff !important;
+		}
+	}
+}
+.v-input .v-select__slot .v-chip--select {
+	white-space: inherit !important;
+	height: auto !important;
+	min-height: 32px;
+}
