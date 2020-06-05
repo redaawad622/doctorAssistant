@@ -32,26 +32,34 @@
 					<div class="d-flex">
 						<v-btn
 							@click="editItem(item)"
-							x-small
-							color="primary"
-							class="white--text mr-2"
-							fab
+							max-width="35px"
+							min-width="35px"
+							height="35px"
+							rounded
+							v-bind="btnStyle"
+							class="mx-2"
+							color="#A5C13D"
+							:class="{
+								'white--text': !btnStyle.outlined && !btnStyle.text
+							}"
 						>
 							<v-icon>
-								mdi-pencil
+								mdi-square-edit-outline
 							</v-icon>
 						</v-btn>
 						<v-btn
-							@click="deleteItem = item"
-							x-small
+							max-width="35px"
+							min-width="35px"
+							height="35px"
+							rounded
 							color="red"
-							class="white--text"
-							fab
+							:class="{
+								'white--text': !btnStyle.outlined && !btnStyle.text
+							}"
+							@click="deleteItem = item"
+							v-bind="btnStyle"
+							><v-icon>mdi-trash-can-outline </v-icon></v-btn
 						>
-							<v-icon>
-								mdi-delete
-							</v-icon>
-						</v-btn>
 					</div>
 				</template>
 				<template v-slot:no-data>
@@ -95,6 +103,7 @@
 				right
 				fixed
 				fab
+				v-bind="btnStyle"
 				@click="setDialog(true)"
 			>
 				<v-icon class="display-2 font-weight-bold">mdi-plus</v-icon>
@@ -122,7 +131,10 @@
 			]
 		}),
 		computed: {
-			...mapGetters(PATIENTS_NAMESPACE, ['patients', 'meta', 'loading'])
+			...mapGetters(PATIENTS_NAMESPACE, ['patients', 'meta', 'loading']),
+			btnStyle() {
+				return this.$store.getters.btnStyle;
+			}
 		},
 
 		methods: {

@@ -18,7 +18,7 @@
 		</div>
 		<span class="px-4">&copy; {{ new Date().getFullYear() }}</span>
 		<div>
-			<span class="me-2">Version 1.0.0</span>
+			<span class="me-2">Version 1.0.1</span>
 			<v-btn icon large @click="dialog = true"
 				><v-icon color="primary">mdi-cogs</v-icon></v-btn
 			>
@@ -34,7 +34,9 @@
 						v-model="layout"
 					></custom-select>
 					<v-divider></v-divider>
-					<v-subheader class="px-0">Input Layout</v-subheader>
+					<v-subheader class="px-0" v-if="selectType !== 'chip'"
+						>Input Layout</v-subheader
+					>
 					<custom-select
 						v-model="inputShape"
 						:items="shapeItems"
@@ -56,6 +58,15 @@
 					<v-switch v-model="flat" label="Flat input"></v-switch>
 					<v-switch v-model="shaped" label="Shaped input"></v-switch>
 					<v-switch v-model="rounded" label="rounded input"></v-switch>
+					<v-divider></v-divider>
+					<v-subheader class="px-0" v-if="selectType !== 'chip'"
+						>button style</v-subheader
+					>
+					<custom-select
+						v-model="btnS"
+						:items="['default', 'outlined', 'text']"
+						label="button style"
+					></custom-select>
 					<v-divider></v-divider>
 					<v-subheader class="px-0">Themes</v-subheader>
 					<v-switch
@@ -118,16 +129,18 @@
 				<v-card-actions class="back justify-space-between py-4">
 					<v-btn
 						color="red darken-1"
-						class="white--text font-weight-medium text-capitalize elevation-5"
+						class="white--text font-weight-medium text-capitalize"
 						@click="reset"
+						v-bind="btnStyle"
 					>
 						reset to default
 					</v-btn>
 					<v-btn
 						color="primary"
-						class="white--text font-weight-medium text-capitalize elevation-5"
+						class="white--text font-weight-medium text-capitalize "
 						@click="done()"
 						:loading="loading"
+						v-bind="btnStyle"
 					>
 						done
 					</v-btn>
@@ -140,6 +153,7 @@
 <script>
 	import { setItem } from '../../helpers/storage';
 	import customSelect from '../common/customSelect';
+	//const { getCurrentWindow } = require('electron').remote;
 	export default {
 		data() {
 			return {
@@ -152,6 +166,7 @@
 				reloadLoading: false,
 				colors: [
 					{ hash: '#336cfb', name: 'Primary' },
+					{ hash: '#3272ab', name: 'dark blue' },
 					{ hash: '#f79421', name: 'Orange' },
 					{ hash: '#30519e', name: 'Blue' },
 					{ hash: '#0fc646', name: 'Green' },
@@ -175,12 +190,23 @@
 			inputStyle() {
 				return this.$store.getters.inputStyle;
 			},
+			btnStyle() {
+				return this.$store.getters.btnStyle;
+			},
 			inputShape: {
 				get() {
 					return this.$store.getters.inputShape;
 				},
 				set(val) {
 					return this.$store.commit('inputShape', val);
+				}
+			},
+			btnS: {
+				get() {
+					return this.$store.getters.btnS;
+				},
+				set(val) {
+					return this.$store.commit('btnStyle', val);
 				}
 			},
 			selectType: {
@@ -224,12 +250,14 @@
 			},
 			reload() {
 				this.reloadLoading = true;
-				location.reload();
+				window.location.reload();
+				//getCurrentWindow().reload();
 			},
 			reset() {
 				this.changeColor('#336cfb');
 				this.dark = false;
 				this.layout = 'Vertical';
+				this.$store.dispatch('reset');
 			},
 			changeColor(color) {
 				// Light theme

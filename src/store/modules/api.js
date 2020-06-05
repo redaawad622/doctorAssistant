@@ -10,5 +10,12 @@ export default {
 	getSession: 'session',
 	getComplaint: 'complaint/autoComplete',
 	getHistory: 'history/autoComplete',
-	getExamination: 'examination/autoComplete'
+	getExamination: 'examination/autoComplete',
+	getMedicine: 'medicine/autoComplete',
+	getDoses: 'dose/autoComplete',
+	getDiagnosis: 'diagnosis/autoComplete',
+	getRequest: 'request/autoComplete',
+	getNotes: 'note/autoComplete',
+	getData: 'dashboard',
+	todaySession: 'dashboard/todaySession'
 };

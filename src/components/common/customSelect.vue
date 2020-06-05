@@ -11,27 +11,48 @@
 			active-class="primary"
 			:column="!$vuetify.breakpoint.xs"
 		>
-			<v-chip filter v-for="item in items" :key="item" :value="item">{{
+			<v-chip small filter v-for="item in items" :key="item" :value="item">{{
 				item
 			}}</v-chip>
 		</v-chip-group>
-		<v-autocomplete
-			v-else-if="selectType === 'autocomplete'"
-			:items="items"
-			:value="value"
-			@change="changeItem"
-			allow-overflow
-			v-bind="inputStyle"
-			:label="label"
-		></v-autocomplete>
+		<template v-else-if="selectType === 'autocomplete'">
+			<v-combobox
+				v-if="allow"
+				:items="items"
+				:value="value"
+				@change="changeItem"
+				allow-overflow
+				v-bind="inputStyle"
+				:label="label"
+				@focus="focusEmit(id)"
+				:dense="dense"
+				:hide-details="hideDetails"
+				:id="id"
+			></v-combobox>
+			<v-autocomplete
+				v-else
+				:items="items"
+				:value="value"
+				@change="changeItem"
+				allow-overflow
+				@focus="$emit('focus')"
+				v-bind="inputStyle"
+				:label="label"
+				:hide-details="hideDetails"
+				:dense="dense"
+			></v-autocomplete>
+		</template>
 		<v-select
 			v-else
 			:items="items"
 			:value="value"
 			@change="changeItem"
 			allow-overflow
+			@focus="$emit('focus')"
+			:hide-details="hideDetails"
 			v-bind="inputStyle"
 			:label="label"
+			:dense="dense"
 		></v-select>
 	</div>
 </template>
@@ -54,6 +75,34 @@
 			label: {
 				type: String,
 				default: ''
+			},
+			allow: {
+				type: Boolean,
+				default: false
+			},
+			dense: {
+				type: Boolean,
+				default: false
+			},
+			hideDetails: {
+				type: [Boolean, String],
+				default: false
+			},
+			id: {
+				type: String,
+				default: () => {
+					const length = 5;
+					let result = '';
+					const characters =
+						'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+					const charactersLength = characters.length;
+					for (var i = 0; i < length; i++) {
+						result += characters.charAt(
+							Math.floor(Math.random() * charactersLength)
+						);
+					}
+					return result;
+				}
 			}
 		},
 		computed: {
@@ -69,6 +118,9 @@
 			}
 		},
 		methods: {
+			focusEmit() {
+				this.$emit('focus');
+			},
 			changeItem(val) {
 				this.$emit('input', val);
 			}

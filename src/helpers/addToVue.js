@@ -2,7 +2,7 @@ import { getItem } from './storage';
 
 export const addToVueProto = function(Vue) {
 	const appUrl = getItem('url');
-	const storagePath = appUrl + 'storage';
+	const storagePath = appUrl + '/DA_APP/storage/app/public';
 	Vue.prototype.$appUrl = appUrl;
 	Vue.prototype.$storagePath = storagePath;
 	Vue.prototype.$userPath = storagePath + '/users';

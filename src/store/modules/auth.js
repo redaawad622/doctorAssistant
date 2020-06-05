@@ -64,11 +64,12 @@ export default {
 		},
 		logout({ commit }) {
 			return new Promise((resolve, reject) => {
+				commit('logout');
+
 				window.axios
 					.get(api.logout)
 					.then(response => {
 						resolve(response);
-						commit('logout', response);
 					})
 					.catch(rej => {
 						reject(rej);

@@ -13,6 +13,7 @@ const defaultSelectType = getItem('selectType') || 'chip';
 const defaultFlat = getItem('flat') || { flat: false };
 const defaultShaped = getItem('shaped') || { shaped: false };
 const defaultRounded = getItem('rounded') || { rounded: true };
+const defaultBtn = getItem('defaultBtn') || { outlined: false, text: false };
 export default new Vuex.Store({
 	strict: process.env.NODE_ENV !== 'production',
 	state: {
@@ -20,7 +21,8 @@ export default new Vuex.Store({
 		selectType: defaultSelectType,
 		shaped: defaultShaped,
 		flat: defaultFlat,
-		rounded: defaultRounded
+		rounded: defaultRounded,
+		btnStyle: defaultBtn
 	},
 	getters: {
 		inputStyle(state) {
@@ -40,6 +42,16 @@ export default new Vuex.Store({
 		},
 		selectType(state) {
 			return state.selectType;
+		},
+		btnS(state) {
+			return (
+				Object.keys(state.btnStyle).find(
+					elm => state.btnStyle[elm] == true
+				) || 'default'
+			);
+		},
+		btnStyle(state) {
+			return state.btnStyle;
 		},
 		shaped(state) {
 			return state.shaped.shaped;
@@ -68,6 +80,18 @@ export default new Vuex.Store({
 				setItem('rounded', state.rounded);
 			}
 		},
+		btnStyle(state, payload) {
+			let old = { ...state.btnStyle };
+			Object.keys(old).forEach(elm => {
+				if (elm == payload) {
+					old[elm] = true;
+				} else {
+					old[elm] = false;
+				}
+			});
+			state.btnStyle = old;
+			setItem('defaultBtn', state.btnStyle);
+		},
 		selectType(state, payload) {
 			state.selectType = payload;
 			setItem('selectType', state.selectType);
@@ -85,6 +109,15 @@ export default new Vuex.Store({
 			setItem('rounded', state.rounded);
 		}
 	},
-	actions: {},
+	actions: {
+		reset({ commit }) {
+			commit('inputShape', 'filled');
+			commit('btnStyle', 'default');
+			commit('selectType', 'chip');
+			commit('shaped', false);
+			commit('flat', false);
+			commit('rounded', true);
+		}
+	},
 	modules: modules
 });

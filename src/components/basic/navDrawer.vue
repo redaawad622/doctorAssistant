@@ -23,7 +23,7 @@
 					<v-img src="/img/logo.svg"></v-img>
 				</v-list-item-avatar>
 				<v-list-item-content>
-					<v-list-item-title>Doctor Assistance</v-list-item-title>
+					<v-list-item-title>Doctor Assistant</v-list-item-title>
 					<v-list-item-subtitle>Application</v-list-item-subtitle>
 				</v-list-item-content>
 				<v-btn
@@ -52,7 +52,10 @@
 				</template>
 
 				<v-list-item v-else :key="item.title" link :to="item.to">
-					<v-list-item-icon class="mr-2 d-flex align-center">
+					<v-list-item-icon
+						class="mr-2 d-flex align-center"
+						v-if="mini || item.mini"
+					>
 						<v-icon color="#000" style="opacity:0.25" v-if="item.icon">{{
 							item.icon
 						}}</v-icon>
@@ -67,7 +70,7 @@
 				</v-list-item>
 			</template>
 		</v-list>
-		<div class="d-flex justify-center">
+		<div class="d-flex justify-center" v-if="isAc">
 			<v-btn
 				:icon="mini"
 				color="primary"
@@ -84,7 +87,10 @@
 <script>
 	import patient from '../../svg/patient';
 	import dashboard from '../../svg/dashboard';
+	import state from '../../svg/state';
+	import todo from '../../svg/todo';
 	import { PATIENTS_NAMESPACE } from '../../store/modules/namespaces';
+	import { getItem } from '../../helpers/storage';
 	export default {
 		props: {
 			mini: {
@@ -105,47 +111,77 @@
 				clipped: false,
 				floating: true,
 				items: [
-					{ header: 'main', divider: false },
-					{ title: 'Home', component: 'dashboard', to: '/' },
-					{ title: 'Patients', component: 'patient', to: '/patients' },
+					{ header: 'main', divider: true },
+					{ title: 'Home', component: 'dashboard', to: '/', mini: true },
+					{
+						title: 'Statistics',
+						component: 'state',
+						to: '/statistics',
+						mini: true
+					},
+					{
+						title: 'Patients',
+						component: 'patient',
+						to: '/patients',
+						mini: true
+					},
+					{
+						title: 'To-Do',
+						component: 'todo',
+						to: '/todo',
+						mini: true
+					},
 					{ header: 'Templates', divider: true },
 					{
 						title: 'Complaint',
-						icon: 'mdi-patient',
+						icon: 'C',
 						to: '/template/complaint'
 					},
+
 					{
 						title: 'History',
-						icon: 'mdi-patient',
+						icon: 'H',
 						to: '/template/history'
 					},
 					{
 						title: 'Examination',
-						icon: 'mdi-patient',
+						icon: 'E',
 						to: '/template/examination'
 					},
 					{
 						title: 'Medicines',
-						icon: 'mdi-patient',
+						icon: 'M',
 						to: '/template/medicines'
 					},
-					{ title: 'Doses', icon: 'mdi-patient', to: '/template/doses' },
+					{ title: 'Doses', icon: 'Do', to: '/template/doses' },
 					{
 						title: 'Diagnosis',
-						link: '/template/diagnosis',
-						icon: 'mdi-patient'
+						to: '/template/diagnosis',
+						icon: 'Di'
 					},
 					{
 						title: 'Requests',
-						link: '/template/requests',
-						icon: 'mdi-patient'
+						to: '/template/requests',
+						icon: 'R'
+					},
+					{
+						title: 'Glass Notes',
+						to: '/template/notes',
+						icon: 'G'
 					}
 				]
 			};
 		},
 		components: {
 			patient,
-			dashboard
+			dashboard,
+			state,
+			todo
+		},
+		computed: {
+			isAc() {
+				return getItem('isAc');
+			}
 		},
 		methods: {
 			openPatient() {

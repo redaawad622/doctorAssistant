@@ -6,6 +6,7 @@
 			:current="currentImg"
 			v-if="images"
 		/>
+		<printPres></printPres>
 		<navDrawer
 			:mini="mini"
 			@mini="mini = !mini"
@@ -13,7 +14,13 @@
 		/>
 		<appNav @mini="mini = !mini" :mini="mini" v-if="!hide" />
 		<v-content>
-			<v-container fluid :class="hide && 'pa-0'">
+			<v-container
+				fluid
+				:class="{
+					'pa-0': hide && !$vuetify.breakpoint.xs,
+					'py-0': hide && $vuetify.breakpoint.xs
+				}"
+			>
 				<v-row align="center" justify="center">
 					<router-view></router-view>
 				</v-row>
@@ -35,6 +42,8 @@
 	import { getItem } from '../helpers/storage';
 	import create from '../components/patient/create';
 	import imagePreview from '../components/common/imagePreview';
+	import printPres from '../components/sessions/print';
+
 	export default {
 		name: 'Master',
 
@@ -43,7 +52,8 @@
 			appNav,
 			appFooter,
 			create,
-			imagePreview
+			imagePreview,
+			printPres
 		},
 		data: () => ({
 			mini: false

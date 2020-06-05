@@ -1,6 +1,7 @@
 <template>
 	<v-row justify="center">
 		<v-dialog
+			class="sec"
 			:value="value"
 			@input="$emit('input', false)"
 			persistent
@@ -49,20 +50,33 @@
 
 				<v-card-actions class="back justify-space-between py-4 mt-auto">
 					<v-btn
+						v-bind="btnStyle"
 						color="red darken-1"
-						class="white--text font-weight-medium text-capitalize elevation-5 text-capitalize"
+						class="white--text font-weight-medium text-capitalize  text-capitalize"
 						@click="$emit('input', false)"
 					>
 						close
 					</v-btn>
-					<v-btn
-						color="primary"
-						class="white--text font-weight-medium text-capitalize elevation-5 text-capitalize"
-						@click="saveSession()"
-						:loading="saveSessionLoading"
-					>
-						{{ session.id ? 'Update session' : 'Save session' }}
-					</v-btn>
+					<div>
+						<v-btn
+							v-bind="btnStyle"
+							color="primary"
+							class="white--text font-weight-medium text-capitalize text-capitalize me-3"
+							@click="print()"
+							v-if="tab == 4 || tab == 5 || tab == 6"
+						>
+							Print
+						</v-btn>
+						<v-btn
+							v-bind="btnStyle"
+							color="primary"
+							class="white--text font-weight-medium text-capitalize text-capitalize"
+							@click="saveSession()"
+							:loading="saveSessionLoading"
+						>
+							{{ session.id ? 'Update session' : 'Save session' }}
+						</v-btn>
+					</div>
 				</v-card-actions>
 				<v-overlay v-if="saveSessionLoading">
 					<v-progress-circular
@@ -82,6 +96,10 @@
 	import Complaint from './tabs/Complaint';
 	import History from './tabs/History';
 	import Examination from './tabs/Exam';
+	import Medicine from './tabs/Med';
+	import Diagnosis from './tabs/Diagnosis';
+	import Requests from './tabs/Requests';
+	import Glass from './tabs/glass';
 	import {
 		SESSION_NAMESPACE,
 		PATIENT_NAMESPACE
@@ -101,7 +119,11 @@
 		components: {
 			Complaint,
 			History,
-			Examination
+			Examination,
+			Medicine,
+			Diagnosis,
+			Requests,
+			Glass
 		},
 		data() {
 			return {
@@ -112,10 +134,10 @@
 					{ tab: 'Complaint', component: 'Complaint' },
 					{ tab: 'History', component: 'History' },
 					{ tab: 'Examination', component: 'Examination' },
+					{ tab: 'Diagnosis', component: 'Diagnosis' },
 					{ tab: 'Medicine', component: 'Medicine' },
 					{ tab: 'Glass', component: 'Glass' },
-					{ tab: 'Requests', component: 'Requests' },
-					{ tab: 'Diagnosis', component: 'Diagnosis' }
+					{ tab: 'Requests', component: 'Requests' }
 				],
 				loading: false,
 				errors: []
@@ -123,12 +145,36 @@
 		},
 		computed: {
 			...mapGetters(PATIENT_NAMESPACE, ['patient', 'sessions']),
-			...mapGetters(SESSION_NAMESPACE, ['percentage', 'session'])
+			...mapGetters(SESSION_NAMESPACE, ['percentage', 'session']),
+			btnStyle() {
+				return this.$store.getters.btnStyle;
+			}
 		},
 		methods: {
+			print() {
+				let val = 'med';
+				switch (this.tab) {
+					case 4:
+						val = 'med';
+						break;
+					case 5:
+						val = 'glass';
+						break;
+					case 6:
+						val = 'req';
+						break;
+
+					default:
+						val = '';
+						break;
+				}
+
+				this.$store.commit(`${SESSION_NAMESPACE}/updatePrint`, val);
+			},
 			validate() {
 				this.errors = [];
 			},
+
 			getSession() {
 				this.sessionLoading = true;
 				this.$store
@@ -177,6 +223,9 @@
 		},
 		watch: {
 			sessionId(val) {
+				if (!val) {
+					this.$store.commit(`${SESSION_NAMESPACE}/reset`);
+				}
 				if (val !== this.session.id) {
 					this.getSession();
 				}
@@ -185,4 +234,10 @@
 	};
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+	@media print {
+		.sec {
+			display: none;
+		}
+	}
+</style>

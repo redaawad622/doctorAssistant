@@ -62,11 +62,12 @@
 							<v-btn
 								:disabled="!valid"
 								color="#A5C13D"
-								class="mb-2 text-capitalize font-weight-bold elevation-5"
+								class="mb-2 text-capitalize font-weight-bold "
 								height="40px"
 								:loading="loading"
 								@click.prevent="validate"
 								block
+								v-bind="btnStyle"
 							>
 								Update
 							</v-btn>
@@ -82,7 +83,13 @@
 						{{ item }}
 					</v-alert>
 				</v-col>
-				<v-col md="6" cols="12">test</v-col>
+				<v-col md="6" cols="12">
+					<div
+						class="d-flex justify-center align-center title primary--text"
+					>
+						{{ patient.created_at }}
+					</div>
+				</v-col>
 			</v-row>
 
 			<v-snackbar left color="success" v-model="snackbar" :timeout="4000">
@@ -121,9 +128,13 @@
 				<template v-slot:item.actions="{ item }">
 					<div class="d-flex">
 						<v-btn
+							v-bind="btnStyle"
 							x-small
-							color="primary"
-							class="white--text mr-2"
+							color="#A5C13D"
+							class="mr-2"
+							:class="{
+								'white--text': !btnStyle.outlined && !btnStyle.text
+							}"
 							@click="openDialog(item.id)"
 							fab
 						>
@@ -135,8 +146,11 @@
 							@click="deleteItem = item"
 							x-small
 							color="red"
-							class="white--text"
 							fab
+							v-bind="btnStyle"
+							:class="{
+								'white--text': !btnStyle.outlined && !btnStyle.text
+							}"
 						>
 							<v-icon>
 								mdi-delete
@@ -186,6 +200,7 @@
 		</v-row>
 		<v-fab-transition>
 			<v-btn
+				v-bind="btnStyle"
 				color="primary"
 				style="bottom:70px"
 				elevation="5"
@@ -277,6 +292,9 @@
 			},
 			inputStyle() {
 				return this.$store.getters.inputStyle;
+			},
+			btnStyle() {
+				return this.$store.getters.btnStyle;
 			}
 		},
 		created() {

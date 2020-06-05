@@ -1,11 +1,12 @@
 'use strict';
 import path from 'path';
-import { app, protocol, BrowserWindow, Menu } from 'electron';
+import { app, protocol, BrowserWindow, Menu, globalShortcut } from 'electron';
 import {
 	createProtocol
 	/* installVueDevtools */
 } from 'vue-cli-plugin-electron-builder/lib';
 import { autoUpdater } from 'electron-updater';
+
 const isDevelopment = process.env.NODE_ENV !== 'production';
 //set GH_TOKEN=b9cb1dc7a1e0fa87b06eb9af07403e2113c5b8ee;
 // Keep a global reference of the window object, if you don't, the window will
@@ -28,6 +29,15 @@ function createWindow() {
 		}
 	});
 	Menu.setApplicationMenu(null);
+	globalShortcut.register('f5', function() {
+		console.log('f5 click');
+		win.reload();
+	});
+	globalShortcut.register('commandOrControl+R', function() {
+		console.log('r click');
+		win.reload();
+	});
+
 	if (process.env.WEBPACK_DEV_SERVER_URL) {
 		// Load the url of the dev server if in development mode
 		win.loadURL(process.env.WEBPACK_DEV_SERVER_URL);

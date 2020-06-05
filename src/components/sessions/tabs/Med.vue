@@ -1,314 +1,413 @@
 <template>
-   <md-card :md-elevation="0" class="shadow-0">
-      <md-card-header>
-         <div class="md-title">Patient Medication</div>
-      </md-card-header>
-      <md-card-content>
-         <md-field :class="getValidationClass('name')">
-            <label for="first-name">Patient Name</label>
-            <md-input
-               name="first-name"
-               id="first-name"
-               autocomplete="given-name"
-               v-model="userData.name"
-               :disabled="sending"
-            />
-            <span class="md-error" v-if="!$v.userData.name.required"
-               >The first name is required</span
-            >
-            <span class="md-error" v-else-if="!$v.userData.name.minlength"
-               >Invalid first name</span
-            >
-         </md-field>
+	<v-card flat>
+		<v-card-text>
+			<v-simple-table fixed-header max-height="600px" class="cTable">
+				<template v-slot:default>
+					<thead>
+						<tr>
+							<td colspan="5" class="body-1">Medicine</td>
+							<td colspan="5" class="body-1">Dose</td>
+							<td colspan="2" class="body-1">Action</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr
+							v-for="(item, index) in medicines"
+							:key="item.medicine + index"
+						>
+							<td colspan="5" class=" pa-2" v-text="item.medicine"></td>
+							<td colspan="5" class=" pa-2" v-text="item.dose"></td>
+							<td colspan="2" class="d-flex align-center pa-2">
+								<v-btn
+									max-width="35px"
+									min-width="35px"
+									height="35px"
+									rounded
+									@click="open(index)"
+									v-bind="btnStyle"
+									class="mx-2"
+									color="#A5C13D"
+									:class="{
+										'white--text':
+											!btnStyle.outlined && !btnStyle.text
+									}"
+									><v-icon>mdi-square-edit-outline</v-icon></v-btn
+								>
+								<v-btn
+									max-width="35px"
+									min-width="35px"
+									height="35px"
+									rounded
+									color="red"
+									:class="{
+										'white--text':
+											!btnStyle.outlined && !btnStyle.text
+									}"
+									@click="deleteMed(index)"
+									v-bind="btnStyle"
+									><v-icon>mdi-trash-can-outline </v-icon></v-btn
+								>
+							</td>
+						</tr>
+						<tr
+							:class="{
+								'grey lighten-3': !$vuetify.theme.dark,
+								'black lighten-3': $vuetify.theme.dark
+							}"
+						>
+							<td colspan="5" class="pa-0">
+								<v-combobox
+									v-model="med"
+									:items="medicine"
+									label="Medicine"
+									:loading="loading"
+									cache-items
+									hide-details="auto"
+									clearable
+									solo
+									chips
+									multiple
+									flat
+									deletable-chips
+									full-width
+									open-on-clear
+									background-color="transparent"
+								>
+								</v-combobox>
+							</td>
+							<td colspan="5" class="pa-0">
+								<v-combobox
+									v-model="dose"
+									:items="doses"
+									label="Doses"
+									hide-details="auto"
+									:loading="loading"
+									cache-items
+									chips
+									clearable
+									solo
+									flat
+									deletable-chips
+									full-width
+									open-on-clear
+									background-color="transparent"
+								>
+								</v-combobox>
+							</td>
+							<td colspan="2">
+								<v-btn
+									:rounded="inputStyle.rounded"
+									color="primary"
+									large
+									v-bind="btnStyle"
+									@click="addMed"
+									><v-icon>mdi-plus</v-icon> Add</v-btn
+								>
+							</td>
+						</tr>
+					</tbody>
+				</template>
+			</v-simple-table>
+			<v-divider></v-divider>
+			<v-btn
+				text
+				class="my-4 mx-0 px-0"
+				@click="toggle = !toggle"
+				color="primary"
+				>Do you want to change this patient's data ?</v-btn
+			>
+			<v-fade-transition>
+				<v-form ref="form" v-model="valid" v-show="toggle" lazy-validation>
+					<v-text-field
+						v-model="name"
+						:rules="nameRules"
+						label="Name"
+						required
+						v-bind="inputStyle"
+						clearable
+						dense
+					></v-text-field>
 
-         <div class="md-layout md-gutter">
-            <div class="md-layout-item md-small-size-100">
-               <md-field :class="getValidationClass('gender')">
-                  <label>Gender</label>
-                  <md-select
-                     name="gender"
-                     id="gender"
-                     v-model="userData.gender"
-                     md-dense
-                     :disabled="sending"
-                  >
-                     <md-option></md-option>
-                     <md-option value="male">M</md-option>
-                     <md-option value="female">F</md-option>
-                  </md-select>
-                  <span class="md-error">The gender is required</span>
-               </md-field>
-            </div>
+					<v-row>
+						<v-col cols="6">
+							<v-text-field
+								v-model="age"
+								:rules="ageRules"
+								label="Age"
+								required
+								v-bind="inputStyle"
+								clearable
+								dense
+							></v-text-field>
+						</v-col>
+						<v-col cols="6">
+							<v-select
+								:items="items"
+								v-bind="inputStyle"
+								label="Gender"
+								v-model="gender"
+								required
+								dense
+							></v-select>
+						</v-col>
+						<v-menu
+							v-model="menu2"
+							:close-on-content-click="false"
+							:nudge-right="40"
+							transition="scale-transition"
+							offset-y
+							min-width="290px"
+						>
+							<template v-slot:activator="{ on }">
+								<v-text-field
+									v-model="selectedDate"
+									label="selsect session date"
+									readonly
+									v-bind="inputStyle"
+									v-on="on"
+								></v-text-field>
+							</template>
+							<v-date-picker
+								v-model="selectedDate"
+								:value="
+									selectedDate ||
+										new Date().toISOString().substr(0, 10)
+								"
+								@input="menu2 = false"
+							></v-date-picker>
+						</v-menu>
+					</v-row>
+				</v-form>
+			</v-fade-transition>
+		</v-card-text>
 
-            <div class="md-layout-item md-small-size-100">
-               <md-field :class="getValidationClass('age')">
-                  <label for="age">Age</label>
-                  <md-input
-                     type="number"
-                     id="age"
-                     name="age"
-                     autocomplete="age"
-                     v-model="userData.age"
-                     :disabled="sending"
-                  />
-                  <span class="md-error" v-if="!$v.userData.age.required"
-                     >The age is required</span
-                  >
-                  <span class="md-error" v-else-if="!$v.userData.age.maxlength"
-                     >Invalid age</span
-                  >
-               </md-field>
-            </div>
-         </div>
-         <md-datepicker v-model="userData.selectedDate" :mdModelType="String">
-            <label>Select date</label>
-         </md-datepicker>
-         <div>
-            <div
-               v-for="(med, key) in medicines"
-               class="md-layout md-gutter listItem"
-               :key="'med'+key"
-            >
-               <div class="md-layout-item md-size-40 flex">
-                  <md-icon
-                     md-src="/images/icon/medicine.svg"
-                     class="icon"
-                  ></md-icon>
-                  <span class="md-list-item-text">{{ med.medicine }}</span>
-               </div>
-               <div class="md-layout-item md-size-40 flex">
-                  <md-icon
-                     md-src="/images/icon/dose.svg"
-                     class="icon"
-                  ></md-icon>
-                  <span class="md-list-item-text">{{ med.dose }}</span>
-               </div>
-               <div class="md-layout-item md-size-20">
-                  <md-button
-                     class="md-icon-button md-raised md-accent"
-                     @click="deleteMed(key)"
-                  >
-                     <md-icon>delete</md-icon>
-                  </md-button>
-               </div>
-            </div>
-         </div>
-         <div class="formLayout md-layout md-gutter">
-            <div class="md-layout-item md-size-40">
-               <custome-auto-complete
-                  v-model="medicine"
-                  placeholder="Medicine"
-                  id="medId"
-                  :arr="medicineList"
-               ></custome-auto-complete>
-            </div>
-            <div class="md-layout-item md-size-40">
-               <custome-auto-complete
-                  v-model="dose"
-                  placeholder="Dose"
-                  id="doseId"
-                  :arr="doseList"
-                  @add="addMed"
-               ></custome-auto-complete>
-               
-            </div>
-            <div class="md-layout-item md-size-20">
-               <md-button class="md-primary addBtn md-raised" @click="addMed"
-                  ><md-icon>add</md-icon> Add</md-button
-               >
-            </div>
-         </div>
-      </md-card-content>
+		<v-row justify="center">
+			<v-dialog :value="dialog" max-width="500" persistent>
+				<v-card>
+					<v-card-title class="headline text-capitalize">
+						Update medicine</v-card-title
+					>
+					<v-card-text>
+						<v-textarea
+							v-model="editedItem.medicine"
+							label="medicine name"
+							:error-messages="error"
+							v-bind="inputStyle"
+							clearable
+							auto-grow
+						></v-textarea>
+						<v-textarea
+							v-model="editedItem.dose"
+							label="dose"
+							required
+							v-bind="inputStyle"
+							clearable
+							auto-grow
+						></v-textarea>
+					</v-card-text>
 
-      <md-card-actions md-alignment="left">
-         <md-button @click="saveAndPrint()">Print</md-button>
-      </md-card-actions>
-   </md-card>
+					<v-card-actions class="back justify-space-between py-4">
+						<v-btn
+							color="red darken-1"
+							class="white--text font-weight-medium text-capitalize text-capitalize"
+							@click="close()"
+							v-bind="btnStyle"
+						>
+							cancel
+						</v-btn>
+						<v-btn
+							color="primary"
+							class="white--text font-weight-medium text-capitalize text-capitalize"
+							@click="editMed()"
+							v-bind="btnStyle"
+						>
+							Update
+						</v-btn>
+					</v-card-actions>
+				</v-card>
+			</v-dialog>
+		</v-row>
+	</v-card>
 </template>
 
 <script>
-import { validationMixin } from 'vuelidate';
-import {
-   required,
-   minLength,
-   maxLength,
-   numeric,
-   between,
-} from 'vuelidate/lib/validators';
-import CustomeAutoComplete from '../../../../../components/public/customeAutoComplete';
+	import {
+		TEMPLATES_NAMESPACE,
+		SESSION_NAMESPACE,
+		PATIENT_NAMESPACE
+	} from '../../../store/modules/namespaces';
 
-export default {
-   name: 'Med',
-   components: { CustomeAutoComplete },
-   props: ['patient'],
-   mixins: [validationMixin],
-   data: () => ({
-      userSaved: false,
-      sending: false,
-      lastUser: null,
-      dose: null,
-      medicine: null,
-      doseList: [],
-      medicineList: [],
-   }),
-   computed: {
-      medicines: {
-         get() {
-            return this.$store.getters['sessionModules/medicines'];
-         },
-         set(val) {
-            this.$store.commit('sessionModules/medicines', val);
-         },
-      },
-      userData: {
-         get() {
-            return this.$store.getters['sessionModules/userData'];
-         },
-         set(val) {
-            this.$store.commit('sessionModules/userData', val);
-         },
-      },
-      session() {
-         return this.$store.getters['sessionModules/session'];
-      },
-   },
-   validations: {
-      userData: {
-         name: {
-            required,
-            minLength: minLength(3),
-         },
-         age: {
-            required,
-            maxLength: maxLength(3),
-            numeric,
-            between: between(1, 150),
-         },
-         phone: {
-            required,
-            maxLength: minLength(7),
-            numeric,
-         },
-         gender: {
-            required,
-         },
-      },
-   },
-   methods: {
-      getMed(searchTerm) {
-         axios('medicine/autoComplete', { params: { val: searchTerm } }).then(
-            res => {
-               this.loading = false;
-               this.medicineList = res.data.result;
-            }
-         );
-      },
-      getDose(searchTerm) {
-         axios('dose/autoComplete', { params: { val: searchTerm } }).then(
-            res => {
-               this.loading = false;
-               this.doseList = res.data.result;
-            }
-         );
-      },
-      deleteMed(key) {
-         let arr = this.medicines;
-         arr.splice(key, 1);
-         this.medicines = arr;
-      },
-      addMed() {
-         if (this.medicine && this.dose) {
-            let arr = this.medicines;
-            arr.push({ medicine: this.medicine, dose: this.dose });
-            this.medicines = arr;
-            this.medicine = '';
-            this.dose = '';
-         }
-      },
-      getValidationClass(fieldName) {
-         const field = this.$v.userData[fieldName];
+	export default {
+		components: {},
+		computed: {
+			inputStyle() {
+				return this.$store.getters.inputStyle;
+			},
+			btnStyle() {
+				return this.$store.getters.btnStyle;
+			},
+			medicine() {
+				return this.$store.getters[`${TEMPLATES_NAMESPACE}/medicine`];
+			},
+			doses() {
+				return this.$store.getters[`${TEMPLATES_NAMESPACE}/doses`];
+			},
+			medicines: {
+				get() {
+					return (
+						this.$store.getters[`${SESSION_NAMESPACE}/medicines`] || []
+					);
+				},
+				set(val) {
+					this.$store.commit(`${SESSION_NAMESPACE}/medicines`, val);
+				}
+			},
+			name: {
+				get() {
+					return this.$store.getters[`${SESSION_NAMESPACE}/userData`][
+						'name'
+					];
+				},
+				set(val) {
+					this.$store.commit(`${SESSION_NAMESPACE}/userData`, {
+						name: 'name',
+						value: val
+					});
+				}
+			},
+			age: {
+				get() {
+					return this.$store.getters[`${SESSION_NAMESPACE}/userData`][
+						'age'
+					];
+				},
+				set(val) {
+					this.$store.commit(`${SESSION_NAMESPACE}/userData`, {
+						name: 'age',
+						value: val
+					});
+				}
+			},
+			gender: {
+				get() {
+					return this.$store.getters[`${SESSION_NAMESPACE}/userData`][
+						'gender'
+					];
+				},
+				set(val) {
+					this.$store.commit(`${SESSION_NAMESPACE}/userData`, {
+						name: 'gender',
+						value: val
+					});
+				}
+			},
+			selectedDate: {
+				get() {
+					return this.$store.getters[`${SESSION_NAMESPACE}/userData`][
+						'selectedDate'
+					];
+				},
+				set(val) {
+					this.$store.commit(`${SESSION_NAMESPACE}/userData`, {
+						name: 'selectedDate',
+						value: val
+					});
+				}
+			}
+		},
+		data() {
+			return {
+				loading: false,
+				doseLoading: false,
+				med: [],
+				editedItem: { medicine: '', dose: '' },
+				dialog: false,
+				index: null,
+				dose: '',
+				valid: true,
+				requireRule: [v => !!v || 'field is required'],
+				error: '',
+				items: ['male', 'female'],
+				toggle: false,
+				menu2: false,
+				nameRules: [
+					v => !!v || 'field is required',
+					v =>
+						(!!v && v.length > 1) || 'field must be at least 2 characters'
+				],
+				ageRules: [
+					v => {
+						return v
+							? v.length < 7 || 'field must be at less than 7 characters'
+							: true;
+					}
+				]
+			};
+		},
+		methods: {
+			close() {
+				this.dialog = false;
+				this.index = null;
+				this.editedItem = { medicine: '', dose: '' };
+				this.error = '';
+			},
+			open(index) {
+				this.dialog = true;
+				this.index = index;
+				this.editedItem = { ...this.medicines[index] };
+			},
+			deleteMed(key) {
+				const arr = [...this.medicines];
+				arr.splice(key, 1);
+				this.medicines = arr;
+			},
+			editMed() {
+				this.error = '';
+				if (!this.editedItem.medicine) {
+					return (this.error = 'field is required');
+				}
+				const arr = [...this.medicines];
+				arr[this.index] = this.editedItem;
+				this.medicines = arr;
+				this.close();
+			},
+			addMed() {
+				if (this.med.length > 0 && this.dose) {
+					const arr = [...this.medicines];
+					this.med.forEach(elm => {
+						arr.push({ medicine: elm, dose: this.dose });
+					});
 
-         if (field) {
-            return {
-               'md-invalid': field.$invalid && field.$dirty,
-            };
-         }
-      },
-      clearForm() {
-         this.$v.$reset();
-         this.init(this.patient);
-      },
-      saveAndPrint() {
-         if (this.session === 'new') {
-            this.$emit('save');
-         } else {
-            this.$emit('update');
-         }
-         let doctorData = this.$store.getters['doctorData'];
-         let hospitalName = this.$store.getters['hospitalName'];
-         let medicines = this.medicines;
-         let patientData = this.userData;
-         let prescription = {
-            doctorData: doctorData,
-            hospitalName: hospitalName,
-            medicines: medicines,
-            patientData: patientData,
-            patientGlass: null,
-         };
-         this.$store.commit('prescription', prescription);
-      },
-      validateUser() {
-         this.$v.$touch();
-         if (!this.$v.$invalid) {
-            this.saveUser();
-         }
-      },
-      init(val, first = true) {
-         if (first) {
-            let user = {};
-            user.name = val.name;
-            user.gender = val.gender;
-            user.age = val.age;
-            user.number = val.number || '';
-        
-            this.userData = user;
-         }
-
-         this.medicines = [];
-         this.dose = null;
-         this.medicine = null;
-      },
-   },
-   watch: {
-      patient(val) {
-         this.init(val);
-      },
-   },
-   mounted() {
-      this.init(this.patient);
-      this.getMed('');
-      this.getDose('');
-   },
-};
+					this.medicines = arr;
+					this.med = [];
+					this.dose = '';
+				}
+			}
+		},
+		mounted() {
+			if (!this.$store.getters[`${SESSION_NAMESPACE}/isUpdate`]) {
+				const patient = this.$store.getters[`${PATIENT_NAMESPACE}/patient`];
+				this.name = patient.name;
+				this.age = patient.age;
+				this.gender = patient.gender;
+			}
+		},
+		created() {
+			this.loading = true;
+			this.$store.dispatch(`${TEMPLATES_NAMESPACE}/getMedicine`).then(() => {
+				this.loading = false;
+			});
+			this.doseLoading = true;
+			this.$store.dispatch(`${TEMPLATES_NAMESPACE}/getDoses`).then(() => {
+				this.doseLoading = false;
+			});
+		}
+	};
 </script>
 
-<style scoped>
-.flex {
-   display: flex;
-   align-items: center;
-}
-.flex .md-list-item-text {
-   margin-left: 30px;
-    white-space: pre-wrap;
-}
-.listItem {
-   margin-bottom: 16px;
-}
-.addBtn {
-   position: relative;
-   height: 40px;
-   text-transform: capitalize;
-   font-size: 18px;
-   margin: 0;
-}
+<style lang="scss" scoped>
+	.table {
+		width: 100%;
+		text-align: center;
+	}
 </style>

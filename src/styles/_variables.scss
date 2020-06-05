@@ -1,6 +1,6 @@
 $border-color: #f2f2f2;
 $border-color-dark: #000;
-$border-radius: 5px;
+$border-radius: 6px;
 $border-radius-big: 10px;
 $font-color: #bcbcbd;
 $font-color-dark: rgba(255, 255, 255, 0.7);
@@ -96,7 +96,36 @@ thead {
 	}
 }
 .v-input .v-select__slot .v-chip--select {
-	white-space: inherit !important;
+	white-space: pre-wrap !important;
 	height: auto !important;
 	min-height: 32px;
+}
+.boxShadow {
+	box-shadow: 0 18px 24px rgba(0, 0, 0, 0.12);
+}
+.cTable {
+	thead {
+		background: #e8e8e8;
+		tr {
+			background: #e8e8e8 !important;
+			th {
+				color: #000 !important;
+			}
+		}
+	}
+	td:last-child {
+		border-bottom: none !important;
+	}
+}
+.v-data-table .v-data-footer {
+	justify-content: flex-start;
+}
+@media print {
+	.theme--light .back,
+	.theme--dark .back {
+		background-color: inherit !important;
+	}
+	.v-application--wrap {
+		display: none !important;
+	}
 }

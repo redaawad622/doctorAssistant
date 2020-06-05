@@ -3,7 +3,7 @@
 		<v-col
 			cols="12"
 			sm="6"
-			md="4"
+			:md="md"
 			v-for="(file, key) in value"
 			:key="`file${key}`"
 		>
@@ -77,6 +77,10 @@
 			value: {
 				type: Array,
 				default: () => []
+			},
+			md: {
+				type: String,
+				default: '4'
 			}
 		},
 		data() {

@@ -11,51 +11,39 @@
 				style="z-index:2;top:-10px; right:-5px"
 				><v-icon>mdi-plus</v-icon></v-btn
 			>
-			<v-tabs v-model="tab" grow>
-				<v-tab v-for="item in tabs" :key="item.tab">
-					{{ item.tab }}
-				</v-tab>
-			</v-tabs>
 
 			<v-card-text v-show="toggle">
-				<v-tabs-items v-model="tab">
-					<v-tab-item>
+				<v-row>
+					<v-col cols="12" sm="6">
+						<h3 class="text-center mb-4">Right Eye</h3>
+						<v-divider class="mb-3"></v-divider>
 						<custom-select
 							v-model="UC_VA_R"
 							:items="VA_List"
-							label="UC_VA"
+							label="UCVA"
 						></custom-select>
-
 						<custom-select
 							v-model="BC_VA_R"
 							:items="VA_List"
-							label="BC_VA"
+							label="BCVA"
 						></custom-select>
-						<fileUpload v-model="filesR"></fileUpload>
-						<filePreview
-							v-if="multipartR && multipartR.length > 0"
-							v-model="multipartR"
-						></filePreview>
-					</v-tab-item>
-					<v-tab-item>
+					</v-col>
+					<v-col cols="12" sm="6">
+						<h3 class="text-center mb-4">Left Eye</h3>
+						<v-divider class="mb-3"></v-divider>
 						<custom-select
 							v-model="UC_VA_L"
 							:items="VA_List"
-							label="UC_VA"
+							label="UCVA"
 						></custom-select>
 
 						<custom-select
 							v-model="BC_VA_L"
 							:items="VA_List"
-							label="BC_VA"
+							label="BCVA"
 						></custom-select>
-						<fileUpload v-model="filesL"></fileUpload>
-						<filePreview
-							v-if="multipartL && multipartL.length > 0"
-							v-model="multipartL"
-						></filePreview>
-					</v-tab-item>
-				</v-tabs-items>
+					</v-col>
+				</v-row>
 			</v-card-text>
 		</v-card>
 		<v-card-text>
@@ -79,6 +67,27 @@
 				label="save as a template"
 				v-model="saveAsTemplate"
 			></v-checkbox>
+
+			<v-row>
+				<v-col cols="12" sm="6">
+					<h4 class="text-center">Right Eye</h4>
+					<fileUpload v-model="filesR"></fileUpload>
+					<filePreview
+						v-if="multipartR && multipartR.length > 0"
+						v-model="multipartR"
+						md="6"
+					></filePreview>
+				</v-col>
+				<v-col cols="12" sm="6">
+					<h4 class="text-center">Left Eye</h4>
+					<fileUpload v-model="filesL"></fileUpload>
+					<filePreview
+						v-if="multipartL && multipartL.length > 0"
+						v-model="multipartL"
+						md="6"
+					></filePreview>
+				</v-col>
+			</v-row>
 		</v-card-text>
 	</v-card>
 </template>
@@ -96,8 +105,6 @@
 		name: 'Exam',
 		data() {
 			return {
-				tab: null,
-				tabs: [{ tab: 'Right Eye' }, { tab: 'Left Eye' }],
 				toggle: true,
 				loading: false
 			};

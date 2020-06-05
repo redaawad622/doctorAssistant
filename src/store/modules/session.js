@@ -35,9 +35,8 @@ export default {
 				name: 'reda',
 				gender: 'male',
 				age: '',
-				diagnosis: '',
 				number: '',
-				selectedDate: new Date().toDateString()
+				selectedDate: new Date().toISOString().substr(0, 10)
 			},
 			glass: {
 				r_UCVA: '6/60',
@@ -52,12 +51,14 @@ export default {
 				l_cyl: '0.00',
 				l_axis: '',
 				l_add: '',
-				ipd: '62'
+				ipd: '62',
+				notes: ''
 			}
 		},
 		images: null,
 		currentImg: 0,
-		path: null
+		path: null,
+		print: false
 	},
 	getters: {
 		session(state) {
@@ -98,9 +99,21 @@ export default {
 		},
 		path(state) {
 			return state.path;
+		},
+		isUpdate(state) {
+			return !!state.sessionData.id;
+		},
+		printDialog(state) {
+			return !!state.print;
+		},
+		printType(state) {
+			return state.print;
 		}
 	},
 	mutations: {
+		updatePrint(state, payload) {
+			state.print = payload;
+		},
 		updateCurrentImg(state, payload) {
 			state.currentImg = payload;
 		},
@@ -153,11 +166,12 @@ export default {
 		diagnosis(state, payload) {
 			state.sessionData.diagnosis = payload;
 		},
+
 		userData(state, payload) {
-			state.sessionData.userData = payload;
+			state.sessionData.userData[payload.name] = payload.value;
 		},
 		glass(state, payload) {
-			state.sessionData.glass = payload;
+			state.sessionData.glass[payload.name] = payload.value;
 		},
 		updatePercentage(state, payload) {
 			state.percentage = payload;
@@ -195,9 +209,8 @@ export default {
 					name: 'reda',
 					gender: 'male',
 					age: '',
-					diagnosis: '',
 					number: '',
-					selectedDate: new Date().toDateString()
+					selectedDate: new Date().toISOString().substr(0, 10)
 				},
 				glass: {
 					r_UCVA: '',
@@ -212,7 +225,8 @@ export default {
 					l_cyl: '',
 					l_axis: '',
 					l_add: '',
-					ipd: ''
+					ipd: '',
+					notes: ''
 				}
 			};
 		}

@@ -1,142 +1,218 @@
 <template>
-    <md-card :md-elevation="0" class="shadow-0">
-        <md-card-header>
-            <div class="md-title">Patient Requests</div>
-        </md-card-header>
+	<v-card flat>
+		<v-card-text>
+			<v-simple-table fixed-header class="cTable">
+				<template v-slot:default>
+					<thead>
+						<tr>
+							<td colspan="8" class="body-1">Requests</td>
+							<td colspan="2" class="body-1">Action</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr
+							v-for="(item, index) in requests"
+							:key="item.request + index"
+						>
+							<td colspan="8" class=" pa-2" v-text="item.request"></td>
+							<td colspan="2" class="d-flex align-center pa-2">
+								<v-btn
+									max-width="35px"
+									min-width="35px"
+									height="35px"
+									rounded
+									@click="open(index)"
+									v-bind="btnStyle"
+									class="mx-2"
+									color="#A5C13D"
+									:class="{
+										'white--text':
+											!btnStyle.outlined && !btnStyle.text
+									}"
+									><v-icon>mdi-square-edit-outline</v-icon></v-btn
+								>
+								<v-btn
+									max-width="35px"
+									min-width="35px"
+									height="35px"
+									rounded
+									color="red"
+									:class="{
+										'white--text':
+											!btnStyle.outlined && !btnStyle.text
+									}"
+									@click="deleteMed(index)"
+									v-bind="btnStyle"
+									><v-icon>mdi-trash-can-outline </v-icon></v-btn
+								>
+							</td>
+						</tr>
+						<tr
+							:class="{
+								'grey lighten-3': !$vuetify.theme.dark,
+								'black lighten-3': $vuetify.theme.dark
+							}"
+						>
+							<td colspan="8" class="pa-0">
+								<v-combobox
+									v-model="req"
+									:items="request"
+									label="Requests"
+									hide-details="auto"
+									:loading="loading"
+									cache-items
+									chips
+									clearable
+									solo
+									multiple
+									flat
+									deletable-chips
+									full-width
+									open-on-clear
+									background-color="transparent"
+								>
+								</v-combobox>
+							</td>
+							<td colspan="2">
+								<v-btn
+									:rounded="inputStyle.rounded"
+									color="primary"
+									large
+									v-bind="btnStyle"
+									@click="addMed"
+									><v-icon>mdi-plus</v-icon> Add</v-btn
+								>
+							</td>
+						</tr>
+					</tbody>
+				</template>
+			</v-simple-table>
+		</v-card-text>
+		<v-row justify="center">
+			<v-dialog :value="dialog" max-width="500" persistent>
+				<v-card>
+					<v-card-title class="headline text-capitalize">
+						Update request</v-card-title
+					>
+					<v-card-text>
+						<v-textarea
+							v-model="editedItem.request"
+							label="request"
+							:error-messages="error"
+							v-bind="inputStyle"
+							clearable
+							auto-grow
+						></v-textarea>
+					</v-card-text>
 
-        <md-card-content>
-            <div>
-                <div v-for="(req,key) in requests"  class="md-layout md-gutter listItem">
-                   <div class="md-layout-item md-size-80 flex">
-                       <md-icon md-src="/images/icon/requests.svg" class="icon"></md-icon>
-                       <span class="md-list-item-text">{{req.request}}</span>
-                   </div>
-                    <div class="md-layout-item md-size-20" >
-                        <md-button class="md-icon-button md-raised md-accent"  @click="deleteReq(key)" >
-                            <md-icon>delete</md-icon>
-                        </md-button>
-                    </div>
-                </div>
-            </div>
-            <div class="md-layout md-gutter">
-                <div class="md-layout-item md-size-80">
-                    <custome-auto-complete   @add="addReq" v-model="request" placeholder="Request" id="requestId" :arr="requestList" ></custome-auto-complete>
-                </div>
-                
-                <div class="md-layout-item md-size-20">
-                    <md-button class="md-primary addBtn md-raised" @click="addReq"><md-icon>add</md-icon> Add</md-button>
-                </div>
-            </div>
-        </md-card-content>
-
-        <md-card-actions md-alignment="left">
-            <md-button @click="saveAndPrint()">Print</md-button>
-        </md-card-actions>
-    </md-card>
+					<v-card-actions class="back justify-space-between py-4">
+						<v-btn
+							color="red darken-1"
+							class="white--text font-weight-medium text-capitalize text-capitalize"
+							@click="close()"
+							v-bind="btnStyle"
+						>
+							cancel
+						</v-btn>
+						<v-btn
+							color="primary"
+							class="white--text font-weight-medium text-capitalize text-capitalize"
+							@click="editMed()"
+							v-bind="btnStyle"
+						>
+							Update
+						</v-btn>
+					</v-card-actions>
+				</v-card>
+			</v-dialog>
+		</v-row>
+	</v-card>
 </template>
 
-<script>    
-import CustomeAutoComplete from "../../../../../components/public/customeAutoComplete";
+<script>
+	import {
+		TEMPLATES_NAMESPACE,
+		SESSION_NAMESPACE
+	} from '../../../store/modules/namespaces';
 
-    export default {
-        name: "requests",
-        props:['patient'],
-         components: {CustomeAutoComplete},
-        data: () => ({
+	export default {
+		computed: {
+			inputStyle() {
+				return this.$store.getters.inputStyle;
+			},
+			btnStyle() {
+				return this.$store.getters.btnStyle;
+			},
+			request() {
+				return this.$store.getters[`${TEMPLATES_NAMESPACE}/request`];
+			},
+			requests: {
+				get() {
+					return (
+						this.$store.getters[`${SESSION_NAMESPACE}/requests`] || []
+					);
+				},
+				set(val) {
+					this.$store.commit(`${SESSION_NAMESPACE}/requests`, val);
+				}
+			}
+		},
+		data() {
+			return {
+				loading: false,
+				editedItem: { request: '' },
+				dialog: false,
+				index: null,
+				req: [],
+				error: ''
+			};
+		},
+		methods: {
+			close() {
+				this.dialog = false;
+				this.index = null;
+				this.editedItem = { request: '' };
+				this.error = '';
+			},
+			open(index) {
+				this.dialog = true;
+				this.index = index;
+				this.editedItem = { ...this.requests[index] };
+			},
+			deleteMed(key) {
+				const arr = [...this.requests];
+				arr.splice(key, 1);
+				this.requests = arr;
+			},
+			editMed() {
+				this.error = '';
+				if (!this.editedItem.request) {
+					return (this.error = 'field is required');
+				}
+				const arr = [...this.requests];
+				arr[this.index] = this.editedItem;
+				this.requests = arr;
+				this.close();
+			},
+			addMed() {
+				if (this.req.length > 0) {
+					const arr = [...this.requests];
+					this.req.forEach(elm => {
+						arr.push({ request: elm });
+					});
 
-            request:null,
-            requestList:[],
-
-        }),
-        computed:{
-            requests:{
-                get(){
-                    return this.$store.getters['sessionModules/requests'];
-                },
-                set(val){
-                    this.$store.commit('sessionModules/requests',val);
-                }
-            },
-            userData:{
-                get(){
-                    return this.$store.getters['sessionModules/userData'];
-                },
-                set(val){
-                    this.$store.commit('sessionModules/userData',val);
-                }
-            },
-            session(){
-                return this.$store.getters['sessionModules/session'];
-            }
-
-        },
-        methods: {
-            getReq(searchTerm){
-                axios('request/autoComplete',{params:{val:searchTerm}}).then((res)=>{
-                    this.loading=false;
-                    this.requestList=res.data.result;
-                })
-            },
-            deleteReq(key)
-            {
-                let arr=this.requests;
-                arr.splice(key,1);
-                this.requests=arr;
-            },
-            addReq(){
-              if(this.request)
-              {
-                  let arr=this.requests;
-                  arr.push({'request':this.request});
-                  this.requests=arr;
-                  this.request="";
-              }
-            },
-            saveAndPrint(){
-                if(this.session==='new')
-                {
-                    this.$emit('save');
-                }
-                else
-                {
-                    this.$emit('update');
-                }
-                let doctorData=this.$store.getters['doctorData'];
-                let hospitalName=this.$store.getters['hospitalName'];
-                let requests=this.requests;
-                let patientData=this.userData;
-                let prescription={doctorData:doctorData,hospitalName:hospitalName,requests:requests,patientData:patientData,patientGlass:null,medicines:null};
-                this.$store.commit('prescription',prescription);
-            },
-        },
-        created(){
-            this.getReq('');
-        }
-    }
+					this.requests = arr;
+					this.req = [];
+				}
+			}
+		},
+		created() {
+			this.loading = true;
+			this.$store.dispatch(`${TEMPLATES_NAMESPACE}/getRequest`).then(() => {
+				this.loading = false;
+			});
+		}
+	};
 </script>
 
-<style scoped>
-
-    .flex
-    {
-        display: flex;
-        align-items: center;
-
-    }
-
-    .listItem
-    {
-        margin-bottom: 16px;
-    }
-    .addBtn
-    {
-        position: relative;
-        height: 40px;
-        margin: 0;
-    }
-    .flex .md-list-item-text
-    {
-        margin-left: 30px;
-        white-space: pre-wrap;
-    }
-</style>
+<style></style>
