@@ -36,6 +36,8 @@
                <v-col cols="6" class="py-0"><span :style="`font-size:${14*font2}px`">Age: {{ patientData.age }}</span></v-col>
                <v-col cols="6" class="py-0"><span :style="`font-size:${14*font2}px`">Date: {{ patientData.selectedDate }}</span></v-col>
                <v-col cols="6" class="py-0"><span :style="`font-size:${14*font2}px`">number: {{ session.id }}</span></v-col>
+               <v-col v-if="session.diagnosis.length>0" cols="12" class="py-0"><span :style="`font-size:${14*font2}px`">diagnosis: <template v-for="di in session.diagnosis">{{ di.diagnosis+" ," }}</template></span></v-col>
+
             </v-row>
 			</div>
 			<div class="section section3"  :style="`color:${color3};border-color:${borderColor}`">

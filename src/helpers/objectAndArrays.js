@@ -1,3 +1,4 @@
+
 // takes a {} object and returns a FormData object
 export function objectToFormData(obj, form, namespace) {
 	let fd = form || new FormData();

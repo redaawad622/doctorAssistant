@@ -8,10 +8,12 @@ import Statistics from '../views/app/statistics/Statistics';
 import Todo from '../views/app/todo/Todo';
 import Patients from '../views/app/patient/Patients';
 import Patient from '../views/app/patient/Patient';
+import Report from '../views/app/reports/Report';
 import Auth from '../views/app/auth/Auth';
 import CreateAccount from '../views/app/auth/CreateAccount';
 import Login from '../views/app/auth/Login';
 import EditProfile from '../views/app/auth/EditProfile';
+import Settings from '../views/app/settings/Settings';
 
 //templates
 import Complaint from '../views/app/templates/Complaint';
@@ -24,7 +26,9 @@ import Diagnosis from '../views/app/templates/Diagnosis';
 import Notes from '../views/app/templates/Notes';
 
 const routes = [
+	{ path: '/patients/:id/:session_id', component: Report },
 	{
+		
 		path: '/',
 		component: Master,
 		children: [
@@ -47,9 +51,11 @@ const routes = [
 			},
 			{ path: 'statistics', component: Statistics },
 			{ path: 'todo', component: Todo },
+			{ path: 'settings', component: Settings },
 			{ path: 'editProfile', component: EditProfile },
 			{ path: 'patients', component: Patients },
 			{ path: 'patients/:id', component: Patient },
+			
 			{ path: 'template/complaint', component: Complaint },
 			{ path: 'template/history', component: History },
 			{ path: 'template/examination', component: Examination },

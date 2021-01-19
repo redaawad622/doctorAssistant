@@ -17,4 +17,21 @@ export const addToVueProto = function(Vue) {
 		}
 		return result;
 	};
+	Vue.prototype.$arrayToString =  function (value = [], split = ',') {
+		if (Array.isArray(value)) {
+			value = value ? value.join(split) || "" : '';
+		} else {
+			value = '';
+		}
+		return value;
+	}
+	Vue.prototype.$formateDate =  function (value , split = ',') {
+		if (Array.isArray(value)) {
+			value = value ? value.join(split) || "" : '';
+		} else {
+			value = '';
+		}
+		return value;
+	}
+	
 };

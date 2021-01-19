@@ -4,6 +4,7 @@ export default {
 	namespaced: true,
 	state: {
 		percentage: 0,
+		nativeSession:null,
 		sessionData: {
 			complaint: {
 				description: [],
@@ -63,6 +64,9 @@ export default {
 	getters: {
 		session(state) {
 			return state.sessionData;
+		},
+		nativeSession(state) {
+			return state.nativeSession;
 		},
 		percentage(state) {
 			return state.percentage;
@@ -128,7 +132,10 @@ export default {
 			state.currentImg = 0;
 		},
 		sessionData(state, payload) {
+			
 			const session = payload;
+			
+			state.nativeSession=payload;
 			session.complaint.description = stringToArray(
 				session.complaint.description
 			);

@@ -28,7 +28,7 @@ function createWindow() {
       nodeIntegration: true
     }
   });
-  Menu.setApplicationMenu(null);
+ // Menu.setApplicationMenu(null);
   globalShortcut.register("f5", function() {
     win.reload();
   });
