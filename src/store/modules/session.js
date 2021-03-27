@@ -44,15 +44,15 @@ export default {
 				r_BCVA: '6/60',
 				r_sph: '0.00',
 				r_cyl: '0.00',
-				r_axis: '',
+				r_axis: '145°',
 				r_add: '',
 				l_UCVA: '6/60',
 				l_BCVA: '6/60',
 				l_sph: '0.00',
 				l_cyl: '0.00',
-				l_axis: '',
+				l_axis: '145°',
 				l_add: '',
-				ipd: '62',
+				ipd: '68',
 				notes: ''
 			}
 		},

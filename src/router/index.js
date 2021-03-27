@@ -8,7 +8,6 @@ import Statistics from '../views/app/statistics/Statistics';
 import Todo from '../views/app/todo/Todo';
 import Patients from '../views/app/patient/Patients';
 import Patient from '../views/app/patient/Patient';
-import Report from '../views/app/reports/Report';
 import Auth from '../views/app/auth/Auth';
 import CreateAccount from '../views/app/auth/CreateAccount';
 import Login from '../views/app/auth/Login';
@@ -26,9 +25,7 @@ import Diagnosis from '../views/app/templates/Diagnosis';
 import Notes from '../views/app/templates/Notes';
 
 const routes = [
-	{ path: '/patients/:id/:session_id', component: Report },
 	{
-		
 		path: '/',
 		component: Master,
 		children: [
@@ -40,22 +37,23 @@ const routes = [
 					{
 						path: 'createAccount',
 						component: CreateAccount,
-						meta: { hide: true, auth: true }
+						meta: { hide: true, auth: true },
 					},
 					{
 						path: 'login',
 						component: Login,
-						meta: { hide: true, auth: true }
-					}
-				]
+						meta: { hide: true, auth: true },
+					},
+				],
 			},
 			{ path: 'statistics', component: Statistics },
 			{ path: 'todo', component: Todo },
 			{ path: 'settings', component: Settings },
 			{ path: 'editProfile', component: EditProfile },
 			{ path: 'patients', component: Patients },
+			{ path: 'settings', component: Settings },
 			{ path: 'patients/:id', component: Patient },
-			
+
 			{ path: 'template/complaint', component: Complaint },
 			{ path: 'template/history', component: History },
 			{ path: 'template/examination', component: Examination },
@@ -63,16 +61,16 @@ const routes = [
 			{ path: 'template/doses', component: Doses },
 			{ path: 'template/diagnosis', component: Diagnosis },
 			{ path: 'template/requests', component: Requests },
-			{ path: 'template/notes', component: Notes }
-		]
+			{ path: 'template/notes', component: Notes },
+		],
 	},
-	{ path: '*', component: Master }
+	{ path: '*', component: Master },
 ];
 
 const router = new VueRouter({
 	mode: 'history',
 	base: process.env.BASE_URL,
-	routes
+	routes,
 });
 
 export default router;

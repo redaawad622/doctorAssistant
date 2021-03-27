@@ -60,7 +60,7 @@
 
           <v-divider inset v-if="currentUser.email"></v-divider>
 
-          <v-list-item v-if="currentUser.info.address">
+          <v-list-item v-if="repAdd">
             <v-list-item-icon>
               <v-icon color="indigo">
                 mdi-map-marker
@@ -69,7 +69,7 @@
 
             <v-list-item-content>
               <v-list-item-subtitle class="allow">{{
-                currentUser.info.address
+                repAdd
               }}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
@@ -183,7 +183,7 @@
           <div class="title  mb-5 fontColor font-weight-bold">
             Diagnosis
           </div>
-          <p v-for="di in session.diagnosis" :key="di.id + 'di'">
+          <p v-for="(di, index) in session.diagnosis" :key="index + 'di'">
             {{ di.diagnosis }}
           </p>
           <v-divider></v-divider>
@@ -292,6 +292,7 @@
 </template>
 
 <script>
+import { getItem } from "../../../helpers/storage";
 import { AUTH_NAMESPACE } from "../../../store/modules/namespaces";
 
 export default {
@@ -304,7 +305,8 @@ export default {
   },
   data() {
     return {
-      zoom: 100
+      zoom: 100,
+      repAdd: ""
     };
   },
   methods: {
@@ -314,6 +316,9 @@ export default {
     updateVal(val) {
       this.$emit("update:currentComponent", val);
     }
+  },
+  mounted() {
+    this.repAdd = getItem("repAddress") || this.currentUser.info.address;
   },
   watch: {
     zoom(val) {

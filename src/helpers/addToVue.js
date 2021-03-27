@@ -1,5 +1,5 @@
 import { getItem } from './storage';
-
+import { ipcRenderer } from 'electron';
 export const addToVueProto = function(Vue) {
 	const appUrl = getItem('url');
 	const storagePath = appUrl + '/DA_APP/storage/app/public';
@@ -17,21 +17,23 @@ export const addToVueProto = function(Vue) {
 		}
 		return result;
 	};
-	Vue.prototype.$arrayToString =  function (value = [], split = ',') {
+	Vue.prototype.$arrayToString = function(value = [], split = ',') {
 		if (Array.isArray(value)) {
-			value = value ? value.join(split) || "" : '';
+			value = value ? value.join(split) || '' : '';
 		} else {
 			value = '';
 		}
 		return value;
-	}
-	Vue.prototype.$formateDate =  function (value , split = ',') {
+	};
+	Vue.prototype.$formateDate = function(value, split = ',') {
 		if (Array.isArray(value)) {
-			value = value ? value.join(split) || "" : '';
+			value = value ? value.join(split) || '' : '';
 		} else {
 			value = '';
 		}
 		return value;
-	}
-	
+	};
+	Vue.prototype.$reloadPage = function() {
+		ipcRenderer.send('refr');
+	};
 };

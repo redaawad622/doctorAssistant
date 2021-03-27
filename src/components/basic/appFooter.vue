@@ -18,7 +18,7 @@
     </div>
     <span class="px-4">&copy; {{ new Date().getFullYear() }}</span>
     <div>
-      <span class="me-2">Version 1.0.2</span>
+      <span class="me-2">Version 1.0.3</span>
       <v-btn icon large @click="dialog = true"
         ><v-icon color="primary">mdi-cogs</v-icon></v-btn
       >
@@ -146,7 +146,7 @@
 <script>
 import { setItem } from "../../helpers/storage";
 import customSelect from "../common/customSelect";
-//const { getCurrentWindow } = require('electron').remote;
+
 export default {
   data() {
     return {
@@ -243,8 +243,7 @@ export default {
     },
     reload() {
       this.reloadLoading = true;
-      window.location.reload();
-      //getCurrentWindow().reload();
+      this.$reloadPage();
     },
     reset() {
       this.changeColor("#336cfb");

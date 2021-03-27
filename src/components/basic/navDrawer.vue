@@ -89,7 +89,7 @@ import patient from "../../svg/patient";
 import dashboard from "../../svg/dashboard";
 import state from "../../svg/state";
 import todo from "../../svg/todo";
-//import settings from '../../svg/todo';
+import settings from "../../svg/settings";
 import { PATIENTS_NAMESPACE } from "../../store/modules/namespaces";
 import { getItem } from "../../helpers/storage";
 export default {
@@ -132,12 +132,12 @@ export default {
           to: "/todo",
           mini: true
         },
-        // {
-        // 	title: 'Settings',
-        // 	component: 'settings',
-        // 	to: '/settings',
-        // 	mini: true
-        // },
+        {
+          title: "Settings",
+          component: "settings",
+          to: "/settings",
+          mini: true
+        },
         { header: "Templates", divider: true },
         {
           title: "Complaint",
@@ -183,8 +183,8 @@ export default {
     patient,
     dashboard,
     state,
-    todo
-    //settings
+    todo,
+    settings
   },
   computed: {
     isAc() {

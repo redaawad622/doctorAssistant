@@ -72,9 +72,7 @@
               color="primary"
               v-if="session.id"
               class="white--text font-weight-medium text-capitalize text-capitalize mr-2"
-              link
-              :to="`/patients/${patient.id}/${session.id}`"
-              target="_blank"
+              @click="reportOpen = true"
             >
               Generate report
             </v-btn>
@@ -100,6 +98,7 @@
         </v-overlay>
       </v-card>
     </v-dialog>
+    <report v-model="reportOpen"></report>
   </v-row>
 </template>
 
@@ -116,6 +115,7 @@ import {
   PATIENT_NAMESPACE
 } from "../../store/modules/namespaces";
 import { mapGetters } from "vuex";
+import Report from "../../views/app/reports/Report.vue";
 export default {
   props: {
     value: {
@@ -134,20 +134,22 @@ export default {
     Medicine,
     Diagnosis,
     Requests,
-    Glass
+    Glass,
+    Report
   },
   data() {
     return {
       sessionLoading: false,
       saveSessionLoading: false,
       tab: null,
+      reportOpen: false,
       tabs: [
         { tab: "Complaint", component: "Complaint" },
         { tab: "History", component: "History" },
         { tab: "Examination", component: "Examination" },
         { tab: "Diagnosis", component: "Diagnosis" },
         { tab: "Medicine", component: "Medicine" },
-        { tab: "Glass", component: "Glass" },
+        { tab: "Glasses", component: "Glass" },
         { tab: "Requests", component: "Requests" }
       ],
       loading: false,

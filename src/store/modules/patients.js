@@ -73,7 +73,7 @@ export default {
 					.post(link, payload)
 					.then(res => {
 						commit('updateOrAdd', res.data.patient);
-						resolve(res);
+						resolve(res.data.patient);
 					})
 					.catch(rej => {
 						reject(rej);
