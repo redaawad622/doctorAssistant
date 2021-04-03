@@ -52,8 +52,8 @@
           <v-btn
             v-bind="btnStyle"
             color="red darken-1"
-            class="white--text font-weight-medium text-capitalize  text-capitalize"
-            @click="$emit('input', false)"
+            class="white--text font-weight-medium text-capitalize text-capitalize"
+            @click="closePOP()"
           >
             close
           </v-btn>
@@ -164,6 +164,10 @@ export default {
     }
   },
   methods: {
+    closePOP() {
+      [];
+      this.$emit("input", false);
+    },
     print() {
       let val = "med";
       switch (this.tab) {
@@ -232,6 +236,11 @@ export default {
     },
     generateReport() {
       console.log("GEC");
+    }
+  },
+  mounted() {
+    if (!this.sessionId) {
+      this.$store.commit(`${SESSION_NAMESPACE}/reset`);
     }
   },
   watch: {

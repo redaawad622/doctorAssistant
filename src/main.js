@@ -7,6 +7,7 @@ import store from "./store";
 import vuetify from "./plugins/vuetify";
 import "./styles/_variables.scss";
 import { addToVueProto } from "./helpers/addToVue";
+
 Vue.config.productionTip = false;
 addToVueProto(Vue);
 new Vue({

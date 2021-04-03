@@ -4,7 +4,7 @@ export default {
 	namespaced: true,
 	state: {
 		percentage: 0,
-		nativeSession:null,
+		nativeSession: null,
 		sessionData: {
 			complaint: {
 				description: [],
@@ -132,10 +132,10 @@ export default {
 			state.currentImg = 0;
 		},
 		sessionData(state, payload) {
-			
+
 			const session = payload;
-			
-			state.nativeSession=payload;
+
+			state.nativeSession = payload;
 			session.complaint.description = stringToArray(
 				session.complaint.description
 			);
@@ -220,19 +220,19 @@ export default {
 					selectedDate: new Date().toISOString().substr(0, 10)
 				},
 				glass: {
-					r_UCVA: '',
-					r_BCVA: '',
-					r_sph: '',
-					r_cyl: '',
-					r_axis: '',
+					r_UCVA: '6/60',
+					r_BCVA: '6/60',
+					r_sph: '0.00',
+					r_cyl: '0.00',
+					r_axis: '145°',
 					r_add: '',
-					l_UCVA: '',
-					l_BCVA: '',
-					l_sph: '',
-					l_cyl: '',
-					l_axis: '',
+					l_UCVA: '6/60',
+					l_BCVA: '6/60',
+					l_sph: '0.00',
+					l_cyl: '0.00',
+					l_axis: '145°',
 					l_add: '',
-					ipd: '',
+					ipd: '68',
 					notes: ''
 				}
 			};
