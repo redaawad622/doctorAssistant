@@ -178,7 +178,10 @@ export default {
 			state.sessionData.userData[payload.name] = payload.value;
 		},
 		glass(state, payload) {
+			//console.log("before",payload,state.sessionData.glass[payload.name])
 			state.sessionData.glass[payload.name] = payload.value;
+		//	console.log("after",payload,state.sessionData.glass[payload.name])
+
 		},
 		updatePercentage(state, payload) {
 			state.percentage = payload;

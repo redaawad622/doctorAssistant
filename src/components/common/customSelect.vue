@@ -55,7 +55,7 @@
       :label="label"
       :dense="dense"
     ></v-select>
-    <select @change="changeItem" :value="value">
+    <select @change="changeItemForSelect" :value="value">
       <option v-for="item in items" :key="id + item">
         {{ item }}
       </option>
@@ -128,7 +128,10 @@ export default {
       this.$emit("focus");
     },
     changeItem(val) {
-      this.$emit("input", val.target.value);
+      this.$emit("input", val);
+    },
+    changeItemForSelect(e) {
+      this.$emit("input", e.target.value);
     }
   }
 };
