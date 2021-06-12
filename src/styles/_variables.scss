@@ -125,7 +125,12 @@ thead {
 	.theme--dark .back {
 		background-color: inherit !important;
 	}
-	#sandbox .v-application--wrap {
+	header.v-sheet.v-app-bar.v-toolbar,.v-navigation-drawer,.v-application .d-flex.v-footer{
 		display: none !important;
 	}
+	main.v-main{
+		padding: 0  !important;
+		margin: 0 !important;
+	}
+	
 }

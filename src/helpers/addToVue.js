@@ -36,4 +36,7 @@ export const addToVueProto = function(Vue) {
 	Vue.prototype.$reloadPage = function() {
 		ipcRenderer.send('refr');
 	};
+	Vue.prototype.$printing = function() {
+		ipcRenderer.send('printing');
+	};
 };

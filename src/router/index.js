@@ -13,6 +13,8 @@ import CreateAccount from '../views/app/auth/CreateAccount';
 import Login from '../views/app/auth/Login';
 import EditProfile from '../views/app/auth/EditProfile';
 import Settings from '../views/app/settings/Settings';
+import Report from '../views/app/reports/ReportPage';
+
 
 //templates
 import Complaint from '../views/app/templates/Complaint';
@@ -53,6 +55,8 @@ const routes = [
 			{ path: 'patients', component: Patients },
 			{ path: 'settings', component: Settings },
 			{ path: 'patients/:id', component: Patient },
+			{ path: 'report/:id', component: Report },
+
 
 			{ path: 'template/complaint', component: Complaint },
 			{ path: 'template/history', component: History },

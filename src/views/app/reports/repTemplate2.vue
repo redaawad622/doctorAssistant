@@ -11,14 +11,8 @@
           class="pa-0"
           title="prescription template"
         ></v-overflow-btn>
-        <v-slider
-          v-model="zoom"
-          hide-details
-          track-color="grey"
-          class="mx-3"
-          always-dirty
-        >
-          <template v-slot:prepend>
+        <v-text-field hide-details v-model="zoom" outlined class="mx-5">
+          <template v-slot:prepend-inner>
             <v-icon @click="zoom--">
               mdi-minus
             </v-icon>
@@ -29,16 +23,16 @@
               mdi-plus
             </v-icon>
           </template>
-        </v-slider>
+        </v-text-field>
+
         <v-btn text @click="printRep()">print</v-btn>
       </v-toolbar>
 
       <h1 class="text-uppercase fontColor">Patient Report</h1>
-      <div class="subtitle-2 text-uppercase mb-5">
+      <div class="subtitle-2 text-uppercase mb-3" v-if="patient && session">
         {{ new Date().toDateString() }}
+        <span class="ml-3">Number {{ patient.id }} - {{ session.id }}</span>
       </div>
-
-      <div class="subtitle-1">Number {{ patient.id }} - {{ session.id }}</div>
       <v-list
         dense
         class="rounded-lg"
@@ -47,10 +41,10 @@
         color="#94C3B6"
         v-if="currentUser"
       >
-        <div class="text-center title pt-3 text-capitalize font-bold">
-          {{ currentUser.info.enName }}
+        <div class="text-center title pt-1 text-capitalize font-bold">
+          {{ currentUser.info.enName }} (Ophthalmologist)
         </div>
-        <div class="text-center">Ophthalmologist</div>
+
         <v-list-item v-if="currentUser.info.personalPhone">
           <v-list-item-icon>
             <v-icon color="indigo">
@@ -73,19 +67,8 @@
             }}</v-list-item-title>
             <v-list-item-subtitle>Work</v-list-item-subtitle>
           </v-list-item-content>
-        </v-list-item>
-
-        <v-list-item v-if="currentUser.email">
-          <v-list-item-icon>
-            <v-icon color="indigo">
-              mdi-email
-            </v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title class="allow">{{
-              currentUser.email
-            }}</v-list-item-title>
+          <v-list-item-content style="flex:initial" v-if="currentUser.email">
+            <v-list-item-title>{{ currentUser.email }}</v-list-item-title>
             <v-list-item-subtitle>Work</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
@@ -105,61 +88,69 @@
         </v-list-item>
       </v-list>
 
-      <v-list dense class="rounded-lg mt-5" flat color="#F4B896" v-if="patient">
-        <div class="text-center title py-3 text-capitalize" v-if="patient">
+      <v-list
+        dense
+        class="rounded-lg mt-1 "
+        flat
+        color="#F4B896"
+        v-if="patient"
+      >
+        <div class="text-center title py-1 text-capitalize" v-if="patient">
           {{ patient.name }}
         </div>
-        <v-list-item v-if="patient.age">
-          <v-list-item-icon>
-            <v-icon color="indigo">
-              mdi-account
-            </v-icon>
-          </v-list-item-icon>
+        <div class="d-flex flex-columen">
+          <v-list-item class="flex-auto" v-if="patient.age">
+            <v-list-item-icon>
+              <v-icon color="indigo">
+                mdi-account
+              </v-icon>
+            </v-list-item-icon>
 
-          <v-list-item-content>
-            <v-list-item-title>{{ patient.age }}</v-list-item-title>
-            <v-list-item-subtitle>Age</v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>{{ patient.age }}</v-list-item-title>
+              <v-list-item-subtitle>Age</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
 
-        <v-list-item v-if="patient.gender">
-          <v-list-item-icon>
-            <v-icon color="indigo">
-              mdi-account-box-multiple-outline
-            </v-icon>
-          </v-list-item-icon>
+          <v-list-item class="flex-auto" v-if="patient.gender">
+            <v-list-item-icon>
+              <v-icon color="indigo">
+                mdi-account-box-multiple-outline
+              </v-icon>
+            </v-list-item-icon>
 
-          <v-list-item-content>
-            <v-list-item-title class="allow">{{
-              patient.gender
-            }}</v-list-item-title>
-            <v-list-item-subtitle>Gender</v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
+            <v-list-item-content>
+              <v-list-item-title class="allow">{{
+                patient.gender
+              }}</v-list-item-title>
+              <v-list-item-subtitle>Gender</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
 
-        <v-list-item v-if="patient.address">
-          <v-list-item-icon>
-            <v-icon color="indigo">
-              mdi-map-marker
-            </v-icon>
-          </v-list-item-icon>
+          <v-list-item class="flex-auto" v-if="patient.address">
+            <v-list-item-icon>
+              <v-icon color="indigo">
+                mdi-map-marker
+              </v-icon>
+            </v-list-item-icon>
 
-          <v-list-item-content>
-            <v-list-item-subtitle class="allow">{{
-              patient.address
-            }}</v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
+            <v-list-item-content>
+              <v-list-item-subtitle class="allow">{{
+                patient.address
+              }}</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </div>
       </v-list>
       <v-sheet class="section" v-if="session.complaint.description">
-        <div class="title  mb-4 fontColor font-weight-bold">
+        <div class="title  mb-1 fontColor font-weight-bold">
           Patient Complaint
         </div>
         <p>{{ $arrayToString(session.complaint.description, " ") }}</p>
       </v-sheet>
 
       <v-sheet class="section" v-if="session.history.description">
-        <div class="title  mb-4 fontColor font-weight-bold ">
+        <div class="title  mb-1 fontColor font-weight-bold ">
           Patient History
         </div>
         <p>{{ $arrayToString(session.history.description, " ") }}</p>
@@ -167,7 +158,7 @@
 
       <v-sheet class="section" v-if="session.diagnosis">
         <div class="dash"></div>
-        <div class="title  mb-4 fontColor font-weight-bold">
+        <div class="title  mb-1 fontColor font-weight-bold">
           Diagnosis
         </div>
         <p
@@ -179,7 +170,7 @@
         </p>
       </v-sheet>
       <v-sheet class="section" v-if="session.examination.description">
-        <div class="title  mb-4 fontColor font-weight-bold ">
+        <div class="title  mb-1 fontColor font-weight-bold ">
           Examination
         </div>
         <div class="d-flex justify-space-around">
@@ -219,7 +210,7 @@
         </p>
       </v-sheet>
       <v-sheet class="section" v-if="session.medicines.length > 0">
-        <div class="title  mb-4 fontColor font-weight-bold">
+        <div class="title  mb-1 fontColor font-weight-bold">
           Medicines
         </div>
         <v-simple-table dense>
@@ -247,7 +238,7 @@
         </v-simple-table>
       </v-sheet>
       <v-sheet class="section" v-if="session.requests.length > 0">
-        <div class="title  mb-4 fontColor font-weight-bold">
+        <div class="title  mb-1 fontColor font-weight-bold">
           Requests
         </div>
         <p
@@ -263,6 +254,7 @@
 </template>
 
 <script>
+import { getItem, setItem } from "../../../helpers/storage";
 import { AUTH_NAMESPACE } from "../../../store/modules/namespaces";
 
 export default {
@@ -286,9 +278,13 @@ export default {
       this.$emit("update:currentComponent", val);
     }
   },
+  created() {
+    this.zoom = getItem("zooming") || 100;
+  },
   watch: {
     zoom(val) {
       document.querySelector(".report_wrapper").style.zoom = +val / 100;
+      setItem("zooming", val);
     }
   }
 };
@@ -336,7 +332,10 @@ p {
 .right {
   flex: 1;
   .section {
-    padding-top: 15px;
+    padding-top: 5px;
+    p {
+      margin-bottom: 5px;
+    }
   }
   thead,
   thead tr {
@@ -345,5 +344,8 @@ p {
   thead tr th {
     color: rgba(0, 0, 0, 0.6) !important;
   }
+}
+.flex-auto {
+  flex: auto;
 }
 </style>

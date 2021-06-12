@@ -5,14 +5,14 @@ import {
 	protocol,
 	BrowserWindow,
 	Menu,
-	ipcMain,
+	ipcMain
 } from 'electron';
 import {
 	createProtocol,
 	/* installVueDevtools */
 } from 'vue-cli-plugin-electron-builder/lib';
 import { autoUpdater } from 'electron-updater';
-
+//import * as printDialog from 'electron-print-dialog'
 const isDevelopment = process.env.NODE_ENV !== 'production';
 //set GH_TOKEN=b9cb1dc7a1e0fa87b06eb9af07403e2113c5b8ee;
 // Keep a global reference of the window object, if you don't, the window will
@@ -39,6 +39,7 @@ function createWindow() {
 	if (process.env.WEBPACK_DEV_SERVER_URL) {
 		// Load the url of the dev server if in development mode
 		win.loadURL(process.env.WEBPACK_DEV_SERVER_URL);
+		
 		if (!process.env.IS_TEST) win.webContents.openDevTools();
 	} else {
 		createProtocol('app');
@@ -91,6 +92,10 @@ app.on('ready', async () => {
 ipcMain.addListener('refr', function() {
 	win.reload();
 });
+ipcMain.addListener('printing', function() {
+	win.webContents.print({printBackground :true,color:true,margins: {marginType :'none'}})
+});
+
 
 // Exit cleanly on request from parent process in development mode.
 if (isDevelopment) {
