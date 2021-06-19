@@ -94,7 +94,7 @@ ipcMain.addListener('refr', function() {
 	win.reload();
 });
 ipcMain.addListener('printing', function() {
-	win.webContents.print({printBackground :true,color:true,silent:true,margins: {marginType :'none'}})
+	win.webContents.print({printBackground :true,color:true,pageSize:'A5',margins: {marginType :'none'}})
 });
 
 

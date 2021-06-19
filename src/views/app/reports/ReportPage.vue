@@ -63,7 +63,7 @@ export default {
     },
     getPatient() {
       this.$store.dispatch(`${PATIENT_NAMESPACE}/getPatient`, {
-        id: this.nativeSession.userData.number[0]
+        id: this.nativeSession.userData.number.split("-")[0]
       });
     }
   },
