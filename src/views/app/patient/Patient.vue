@@ -62,7 +62,7 @@
               <v-btn
                 :disabled="!valid"
                 color="#A5C13D"
-                class="mb-2 text-capitalize font-weight-bold "
+                class="mb-2 text-capitalize font-weight-bold"
                 height="40px"
                 :loading="loading"
                 @click.prevent="validate"
@@ -136,9 +136,7 @@
               @click="openDialog(item.id)"
               fab
             >
-              <v-icon>
-                mdi-pencil
-              </v-icon>
+              <v-icon> mdi-pencil </v-icon>
             </v-btn>
             <v-btn
               @click="deleteItem = item"
@@ -150,19 +148,15 @@
                 'white--text': !btnStyle.outlined && !btnStyle.text
               }"
             >
-              <v-icon>
-                mdi-delete
-              </v-icon>
+              <v-icon> mdi-delete </v-icon>
             </v-btn>
           </div>
         </template>
         <template v-slot:no-data>
-          <span class="text-capitalize font-weight-bold "
-            >No Session found</span
-          >
+          <span class="text-capitalize font-weight-bold">No Session found</span>
           <v-btn
             color="primary"
-            class="text-capitalize mx-1 "
+            class="text-capitalize mx-1"
             text
             @click="openDialog()"
           >
@@ -200,7 +194,7 @@
       <v-btn
         v-bind="btnStyle"
         color="primary"
-        style="bottom:70px"
+        style="bottom: 70px"
         elevation="5"
         dark
         bottom
@@ -298,12 +292,22 @@ export default {
   created() {
     this.getPatient();
   },
-
+  beforeRouteEnter(_, from, next) {
+    if (from.name == "report") {
+      let id = from.path.split("/")[2];
+      next(vm => {
+        vm.openDialog(id);
+      });
+    } else {
+      next();
+    }
+  },
   methods: {
     openDialog(id = null) {
       this.sessionId = id;
       this.dialog = true;
     },
+
     validate() {
       this.errors = [];
       if (this.$refs.form.validate()) {

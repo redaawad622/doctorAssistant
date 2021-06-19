@@ -45,6 +45,7 @@ function createWindow() {
 		createProtocol('app');
 		// Load the index.html when not in development
 		win.loadURL('app://./index.html');
+		
 		autoUpdater.checkForUpdatesAndNotify();
 	}
 
@@ -93,7 +94,7 @@ ipcMain.addListener('refr', function() {
 	win.reload();
 });
 ipcMain.addListener('printing', function() {
-	win.webContents.print({printBackground :true,color:true,margins: {marginType :'none'}})
+	win.webContents.print({printBackground :true,color:true,silent:true,margins: {marginType :'none'}})
 });
 
 

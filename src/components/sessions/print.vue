@@ -306,7 +306,7 @@ export default {
     },
     print() {
       setItem("prStyle", this.prStyle);
-      window.print();
+      this.$printing();
     }
     //
   },

@@ -55,7 +55,7 @@ const routes = [
 			{ path: 'patients', component: Patients },
 			{ path: 'settings', component: Settings },
 			{ path: 'patients/:id', component: Patient },
-			{ path: 'report/:id', component: Report },
+			{ path: 'report/:id', name:'report', component: Report },
 
 
 			{ path: 'template/complaint', component: Complaint },
@@ -72,7 +72,6 @@ const routes = [
 ];
 
 const router = new VueRouter({
-	mode: 'history',
 	base: process.env.BASE_URL,
 	routes,
 });

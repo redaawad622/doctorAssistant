@@ -272,7 +272,7 @@ export default {
   },
   methods: {
     printRep() {
-      window.print();
+      this.$printing();
     },
     updateVal(val) {
       this.$emit("update:currentComponent", val);

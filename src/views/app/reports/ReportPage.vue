@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     printRep() {
-      window.print();
+      this.$printing();
     },
     getSession() {
       this.loading = true;

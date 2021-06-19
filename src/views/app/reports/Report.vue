@@ -71,7 +71,7 @@ export default {
   },
   methods: {
     printRep() {
-      window.print();
+      this.$printing();
     }
   }
 };

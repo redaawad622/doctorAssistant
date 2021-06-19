@@ -71,7 +71,6 @@
               v-bind="btnStyle"
               color="primary"
               link
-              target="_blank"
               :to="`/report/${session.id}`"
               v-if="session.id"
               class="white--text font-weight-medium text-capitalize text-capitalize mr-2"

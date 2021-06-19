@@ -299,7 +299,6 @@ export default {
             this.$router.push(`patients/${res.id}`);
           })
           .catch(rej => {
-            console.log(rej);
             this.loading = false;
             this.errors = rej.response.data.errors;
           });
