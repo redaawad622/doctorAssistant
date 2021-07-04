@@ -131,7 +131,7 @@
         <v-card-text
           contenteditable
           class="presc fill-height"
-          :class="{ 'A5 elevation-10 my-4': preview }"
+          :class="{ 'A5 elevation-10 my-auto': preview }"
           :style="`background-color:${prStyle.background};`"
         >
           <presc1
@@ -156,28 +156,25 @@
           <v-btn
             v-bind="btnStyle"
             color="red darken-1"
-            class="white--text font-weight-medium text-capitalize  text-capitalize"
+            class="white--text font-weight-medium text-capitalize text-capitalize"
             @click="close()"
+            >close</v-btn
           >
-            close
-          </v-btn>
           <div>
             <v-btn
               v-bind="btnStyle"
               color="primary"
               class="white--text font-weight-medium text-capitalize text-capitalize me-3"
               @click="preview = true"
+              >Preview</v-btn
             >
-              Preview
-            </v-btn>
             <v-btn
               v-bind="btnStyle"
               color="primary"
               class="white--text font-weight-medium text-capitalize text-capitalize me-3"
               @click="print()"
+              >Print</v-btn
             >
-              Print
-            </v-btn>
           </div>
         </v-card-actions>
       </v-card>
@@ -528,6 +525,13 @@ export default {
   .disNone {
     display: none;
   }
+  .v-dialog > .v-card > .presc.v-card__text {
+    padding: 0 !important;
+    zoom: 0.8;
+  }
+  @page {
+    margin: 0;
+  }
 }
 .A5 {
   width: 148mm;
@@ -535,5 +539,7 @@ export default {
   align-self: center;
   max-height: 100%;
   zoom: 0.8;
+  flex: unset !important;
+  padding: none !important;
 }
 </style>

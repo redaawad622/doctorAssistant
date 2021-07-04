@@ -1,12 +1,6 @@
 'use strict';
 import path from 'path';
-import {
-	app,
-	protocol,
-	BrowserWindow,
-	Menu,
-	ipcMain
-} from 'electron';
+import { app, protocol, BrowserWindow, Menu, ipcMain } from 'electron';
 import {
 	createProtocol,
 	/* installVueDevtools */
@@ -39,13 +33,13 @@ function createWindow() {
 	if (process.env.WEBPACK_DEV_SERVER_URL) {
 		// Load the url of the dev server if in development mode
 		win.loadURL(process.env.WEBPACK_DEV_SERVER_URL);
-		
+
 		if (!process.env.IS_TEST) win.webContents.openDevTools();
 	} else {
 		createProtocol('app');
 		// Load the index.html when not in development
 		win.loadURL('app://./index.html');
-		
+
 		autoUpdater.checkForUpdatesAndNotify();
 	}
 
@@ -94,9 +88,13 @@ ipcMain.addListener('refr', function() {
 	win.reload();
 });
 ipcMain.addListener('printing', function() {
-	win.webContents.print({printBackground :true,color:true,pageSize:'A5',margins: {marginType :'none'}})
+	win.webContents.print({
+		printBackground: true,
+		color: true,
+		pageSize: 'A5',
+		margins: { marginType: 'none' },
+	});
 });
-
 
 // Exit cleanly on request from parent process in development mode.
 if (isDevelopment) {

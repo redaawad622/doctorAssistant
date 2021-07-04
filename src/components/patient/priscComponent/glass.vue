@@ -1,12 +1,11 @@
 <template>
   <v-simple-table class="borderTable">
-    <thead :style="`background-color:${borderColor}!important`">
-      <tr :style="`background-color:${borderColor}!important`">
-        <th>#</th>
-        <th>Right Eye</th>
-        <th>Left Eye</th>
-      </tr>
-    </thead>
+    <tr>
+      <td>#</td>
+      <td>Right Eye</td>
+      <td>Left Eye</td>
+    </tr>
+
     <tbody>
       <tr>
         <td>UC_BC_VA</td>
@@ -22,8 +21,7 @@
                 <span
                   class="value"
                   :style="`font-size:${14 * font}px !important`"
-                >
-                  {{ glass.r_UCVA }}</span
+                  >{{ glass.r_UCVA }}</span
                 >
               </div>
             </v-col>
@@ -37,8 +35,7 @@
                 <span
                   class="value"
                   :style="`font-size:${14 * font}px !important`"
-                >
-                  {{ glass.r_BCVA }}</span
+                  >{{ glass.r_BCVA }}</span
                 >
               </div>
             </v-col>
@@ -220,8 +217,7 @@
                 <span
                   class="name"
                   :style="`font-size:${11 * font}px !important`"
-                  >Ipd</span
-                >
+                ></span>
                 <span
                   class="value"
                   :style="`font-size:${14 * font}px !important`"
@@ -241,8 +237,7 @@
                 <span
                   class="name"
                   :style="`font-size:${11 * font}px !important`"
-                  >Notes</span
-                >
+                ></span>
                 <span
                   class="value"
                   :style="`font-size:${14 * font}px !important`"
@@ -283,9 +278,16 @@ export default {
 .data {
   display: flex;
   flex-direction: column;
-  border-right: 1px solid #eee;
+  text-align: center;
   .value {
     font-weight: bold;
+    min-height: 27px;
+    border: 1px solid #b0b5c6;
+    border-radius: 4px;
+    margin-bottom: 4px;
+  }
+  .name {
+    margin-bottom: 4px;
   }
 }
 .data.noneBorder {
@@ -298,8 +300,10 @@ ul {
 ul li {
   padding: 8px 0;
 }
-table tr .col {
-  padding: 4px;
+
+table tr td {
+  text-align: center;
+  padding: 2px 0;
 }
 </style>
 <style>
@@ -311,6 +315,6 @@ table tr .col {
 }
 
 .borderTable tr td {
-  border: 2px solid #eee;
+  border: 2px solid #b0b5c6;
 }
 </style>

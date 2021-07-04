@@ -6,22 +6,22 @@
     class="border-color border-top-2 d-flex justify-space-between"
   >
     <div>
-      <v-btn icon @click="$router.go(-1)"
-        ><v-icon>mdi-arrow-left</v-icon></v-btn
-      >
-      <v-btn icon @click="$router.go(1)"
-        ><v-icon>mdi-arrow-right</v-icon></v-btn
-      >
-      <v-btn icon @click="reload" :loading="reloadLoading"
-        ><v-icon>mdi-reload</v-icon></v-btn
-      >
+      <v-btn icon @click="$router.go(-1)">
+        <v-icon>mdi-arrow-left</v-icon>
+      </v-btn>
+      <v-btn icon @click="$router.go(1)">
+        <v-icon>mdi-arrow-right</v-icon>
+      </v-btn>
+      <v-btn icon @click="reload" :loading="reloadLoading">
+        <v-icon>mdi-reload</v-icon>
+      </v-btn>
     </div>
     <span class="px-4">&copy; {{ new Date().getFullYear() }}</span>
     <div>
-      <span class="me-2">Version 1.0.8</span>
-      <v-btn icon large @click="dialog = true"
-        ><v-icon color="primary">mdi-cogs</v-icon></v-btn
-      >
+      <span class="me-2">Version 1.0.9</span>
+      <v-btn icon large @click="dialog = true">
+        <v-icon color="primary">mdi-cogs</v-icon>
+      </v-btn>
     </div>
     <v-dialog v-model="dialog" max-width="500">
       <v-card>
@@ -86,7 +86,7 @@
               >
                 <v-sheet class="d-flex flex-column align-center justify-center">
                   <v-btn
-                    class="mx-2  white--text"
+                    class="mx-2 white--text"
                     :input-value="active"
                     depressed
                     rounded
@@ -125,18 +125,16 @@
             class="white--text font-weight-medium text-capitalize"
             @click="reset"
             v-bind="btnStyle"
+            >reset to default</v-btn
           >
-            reset to default
-          </v-btn>
           <v-btn
             color="primary"
-            class="white--text font-weight-medium text-capitalize "
+            class="white--text font-weight-medium text-capitalize"
             @click="done()"
             :loading="loading"
             v-bind="btnStyle"
+            >done</v-btn
           >
-            done
-          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
