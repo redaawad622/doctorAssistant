@@ -1,5 +1,5 @@
 <template>
-  <v-row justify="center">
+  <v-row justify="center" class="printPres">
     <v-dialog
       :value="value"
       @input="close()"

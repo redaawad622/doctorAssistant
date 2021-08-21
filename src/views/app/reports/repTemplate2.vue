@@ -1,6 +1,10 @@
 <template>
   <div class="d-flex report_wrapper">
-    <v-sheet class="right pa-5" v-if="session">
+    <v-sheet
+      class="right pa-5"
+      v-if="session"
+      :style="`padding-top:${paddingPageTop}px !important`"
+    >
       <v-toolbar max-height="56px" flat class="mb-4 disNone">
         <v-overflow-btn
           :items="dropdown_template"
@@ -20,6 +24,24 @@
 
           <template v-slot:append>
             <v-icon @click="zoom++">
+              mdi-plus
+            </v-icon>
+          </template>
+        </v-text-field>
+        <v-text-field
+          hide-details
+          v-model="paddingPageTop"
+          outlined
+          class="mx-5"
+        >
+          <template v-slot:prepend-inner>
+            <v-icon @click="paddingPageTop--">
+              mdi-minus
+            </v-icon>
+          </template>
+
+          <template v-slot:append>
+            <v-icon @click="paddingPageTop++">
               mdi-plus
             </v-icon>
           </template>
@@ -262,7 +284,8 @@ export default {
   props: ["patient", "session", "currentComponent", "dropdown_template"],
   data() {
     return {
-      zoom: 100
+      zoom: 100,
+      paddingPageTop: 0
     };
   },
   computed: {
@@ -280,11 +303,15 @@ export default {
   },
   created() {
     this.zoom = getItem("zooming") || 100;
+    this.paddingPageTop = getItem("paddingPageTop") || 0;
   },
   watch: {
     zoom(val) {
       document.querySelector(".report_wrapper").style.zoom = +val / 100;
       setItem("zooming", val);
+    },
+    paddingPageTop(val) {
+      setItem("paddingPageTop", val);
     }
   }
 };

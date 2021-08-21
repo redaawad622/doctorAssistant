@@ -81,7 +81,8 @@ export default {
 @media print {
   .repDialog {
     .v-card__title,
-    .v-card__actions {
+    .v-card__actions,
+    .printPres {
       display: none !important;
     }
   }
