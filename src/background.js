@@ -28,7 +28,7 @@ function createWindow() {
 			nodeIntegration: true,
 		},
 	});
-	Menu.setApplicationMenu(null);
+	//Menu.setApplicationMenu(null);
 
 	if (process.env.WEBPACK_DEV_SERVER_URL) {
 		// Load the url of the dev server if in development mode

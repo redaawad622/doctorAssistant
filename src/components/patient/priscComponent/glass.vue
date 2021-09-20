@@ -1,15 +1,15 @@
 <template>
   <v-simple-table class="borderTable">
     <tr>
-      <td>#</td>
-      <td>Right Eye</td>
-      <td>Left Eye</td>
+      <td colspan="1">#</td>
+      <td colspan="5">Right Eye</td>
+      <td colspan="5">Left Eye</td>
     </tr>
 
     <tbody>
       <tr>
-        <td>UC_BC_VA</td>
-        <td>
+        <td colspan="1"></td>
+        <td colspan="5">
           <v-row>
             <v-col cols="6">
               <div class="data">
@@ -41,7 +41,7 @@
             </v-col>
           </v-row>
         </td>
-        <td>
+        <td colspan="5">
           <v-row>
             <v-col cols="6">
               <div class="data">
@@ -75,8 +75,8 @@
         </td>
       </tr>
       <tr>
-        <td>Dist.</td>
-        <td>
+        <td colspan="1">Dist.</td>
+        <td colspan="5">
           <v-row>
             <v-col cols="4">
               <div class="data">
@@ -122,7 +122,7 @@
             </v-col>
           </v-row>
         </td>
-        <td>
+        <td colspan="5">
           <v-row>
             <v-col cols="4">
               <div class="data">
@@ -170,8 +170,8 @@
         </td>
       </tr>
       <tr>
-        <td>Near</td>
-        <td>
+        <td colspan="1">Near</td>
+        <td colspan="5">
           <v-row>
             <v-col cols="12">
               <div class="data noneBorder">
@@ -189,7 +189,7 @@
             </v-col>
           </v-row>
         </td>
-        <td>
+        <td colspan="5">
           <v-row>
             <v-col cols="12">
               <div class="data noneBorder">
@@ -209,8 +209,8 @@
         </td>
       </tr>
       <tr>
-        <td>IPD</td>
-        <td colspan="2">
+        <td colspan="1">IPD</td>
+        <td colspan="10">
           <v-row>
             <v-col cols="12">
               <div class="data noneBorder">
@@ -229,8 +229,8 @@
         </td>
       </tr>
       <tr>
-        <td>Notes</td>
-        <td colspan="2">
+        <td colspan="1">Notes</td>
+        <td colspan="10">
           <v-row>
             <v-col cols="12">
               <div class="data noneBorder">
@@ -273,7 +273,11 @@ export default {
   }
 };
 </script>
-
+<style>
+.borderTable.v-data-table > .v-data-table__wrapper > table > tbody > tr > td {
+  padding: 0 5px !important;
+}
+</style>
 <style lang="scss" scoped>
 .data {
   display: flex;

@@ -526,8 +526,8 @@ export default {
     display: none;
   }
   .v-dialog > .v-card > .presc.v-card__text {
-    padding: 0 !important;
-    zoom: 0.8;
+    padding: 24px !important;
+    zoom: 0.9;
   }
   @page {
     margin: 0;
@@ -538,7 +538,8 @@ export default {
   height: 209mm;
   align-self: center;
   max-height: 100%;
-  zoom: 0.8;
+  zoom: 0.7;
+
   flex: unset !important;
   padding: none !important;
 }

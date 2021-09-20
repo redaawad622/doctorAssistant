@@ -18,7 +18,7 @@
     </div>
     <span class="px-4">&copy; {{ new Date().getFullYear() }}</span>
     <div>
-      <span class="me-2">Version 1.1.0</span>
+      <span class="me-2">Version 1.1.2</span>
       <v-btn icon large @click="dialog = true">
         <v-icon color="primary">mdi-cogs</v-icon>
       </v-btn>

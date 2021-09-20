@@ -1,212 +1,216 @@
 <template>
-  <v-card class="w-100" flat :loading="getPatientLoading">
-    <v-card-title class="display-1 font-weight-bold text-capitalize"
-      >Patient profile page
-    </v-card-title>
+  <v-card class="w-100 " flat :loading="getPatientLoading">
+    <div class="hardHide">
+      <v-card-title class="display-1 font-weight-bold text-capitalize"
+        >Patient profile page
+      </v-card-title>
 
-    <v-card-text v-if="patient">
-      <v-row>
-        <v-col md="6" cols="12">
-          <v-form ref="form" v-model="valid" lazy-validation>
-            <v-text-field
-              v-model="form.name"
-              :rules="nameRules"
-              label="Name"
-              required
-              v-bind="inputStyle"
-              clearable
-              dense
-            ></v-text-field>
-            <v-text-field
-              v-model="form.phone"
-              label="Phone"
-              required
-              v-bind="inputStyle"
-              clearable
-              dense
-            ></v-text-field>
-            <v-row>
-              <v-col cols="6">
-                <v-text-field
-                  v-model="form.age"
-                  :rules="ageRules"
-                  label="Age"
-                  required
-                  v-bind="inputStyle"
-                  clearable
-                  dense
-                ></v-text-field>
-              </v-col>
-              <v-col cols="6">
-                <v-select
-                  :items="items"
-                  v-bind="inputStyle"
-                  label="Gender"
-                  v-model="form.gender"
-                  required
-                  dense
-                ></v-select>
-              </v-col>
-              <v-textarea
-                v-model="form.address"
-                label="Address"
+      <v-card-text v-if="patient">
+        <v-row>
+          <v-col md="6" cols="12">
+            <v-form ref="form" v-model="valid" lazy-validation>
+              <v-text-field
+                v-model="form.name"
+                :rules="nameRules"
+                label="Name"
                 required
                 v-bind="inputStyle"
                 clearable
                 dense
-                auto-grow
-                no-resize
-                rows="2"
-              >
-              </v-textarea>
-              <v-btn
-                :disabled="!valid"
-                color="#A5C13D"
-                class="mb-2 text-capitalize font-weight-bold"
-                height="40px"
-                :loading="loading"
-                @click.prevent="validate"
-                block
-                v-bind="btnStyle"
-              >
-                Update
-              </v-btn>
-            </v-row>
-          </v-form>
-          <v-alert
-            type="error"
-            dense
-            text
-            v-for="(item, key) in errors"
-            :key="`error${key}`"
-          >
-            {{ item }}
-          </v-alert>
-        </v-col>
-        <v-col md="6" cols="12">
-          <div class="d-flex justify-center align-center title primary--text">
-            {{ patient.created_at }}
-          </div>
-        </v-col>
-      </v-row>
-
-      <v-snackbar left color="success" v-model="snackbar" :timeout="4000">
-        Patient updated successfully
-        <v-btn icon @click="snackbar = false">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-      </v-snackbar>
-    </v-card-text>
-    <v-card-text v-if="!patient && !getPatientLoading">
-      <v-alert type="error" text border="left">
-        {{ msg || "something wrong" }}
-      </v-alert>
-    </v-card-text>
-    <v-card-title
-      class="font-weight-bold text-capitalize mt-10"
-      v-if="patient && !getPatientLoading"
-      >{{ `${patient.name} Sessions` }}</v-card-title
-    >
-    <v-card-text v-if="patient && !getPatientLoading">
-      <v-data-table
-        :headers="headers"
-        :items="sessions"
-        sort-by="id"
-        :must-sort="mustSort"
-        :options.sync="options"
-        class="elevation-0"
-        :server-items-length="meta.total || 0"
-        :loading="getSessionLoading"
-      >
-        <template v-slot:item.id="{ item }">
-          <v-btn @click="openDialog(item.id)" color="primary" text>{{
-            item.id
-          }}</v-btn>
-        </template>
-        <template v-slot:item.actions="{ item }">
-          <div class="d-flex">
-            <v-btn
-              v-bind="btnStyle"
-              x-small
-              color="#A5C13D"
-              class="mr-2"
-              :class="{
-                'white--text': !btnStyle.outlined && !btnStyle.text
-              }"
-              @click="openDialog(item.id)"
-              fab
-            >
-              <v-icon> mdi-pencil </v-icon>
-            </v-btn>
-            <v-btn
-              @click="deleteItem = item"
-              x-small
-              color="red"
-              fab
-              v-bind="btnStyle"
-              :class="{
-                'white--text': !btnStyle.outlined && !btnStyle.text
-              }"
-            >
-              <v-icon> mdi-delete </v-icon>
-            </v-btn>
-          </div>
-        </template>
-        <template v-slot:no-data>
-          <span class="text-capitalize font-weight-bold">No Session found</span>
-          <v-btn
-            color="primary"
-            class="text-capitalize mx-1"
-            text
-            @click="openDialog()"
-          >
-            <v-icon left>mdi-plus</v-icon>
-            create session</v-btn
-          >
-        </template>
-      </v-data-table>
-    </v-card-text>
-    <v-row justify="center">
-      <v-dialog :value="true" v-if="deleteItem" persistent max-width="290">
-        <v-card :loading="deleteLoading">
-          <v-card-title class="headline">Delete Session</v-card-title>
-          <v-card-text
-            >Are you sure you want delete this session? by clicking agree the
-            session will removed and their relations</v-card-text
-          >
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="red darken-1" text @click="deleteItem = null"
-              >Disagree</v-btn
-            >
-            <v-btn
-              color="green darken-1"
+              ></v-text-field>
+              <v-text-field
+                v-model="form.phone"
+                label="Phone"
+                required
+                v-bind="inputStyle"
+                clearable
+                dense
+              ></v-text-field>
+              <v-row>
+                <v-col cols="6">
+                  <v-text-field
+                    v-model="form.age"
+                    :rules="ageRules"
+                    label="Age"
+                    required
+                    v-bind="inputStyle"
+                    clearable
+                    dense
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="6">
+                  <v-select
+                    :items="items"
+                    v-bind="inputStyle"
+                    label="Gender"
+                    v-model="form.gender"
+                    required
+                    dense
+                  ></v-select>
+                </v-col>
+                <v-textarea
+                  v-model="form.address"
+                  label="Address"
+                  required
+                  v-bind="inputStyle"
+                  clearable
+                  dense
+                  auto-grow
+                  no-resize
+                  rows="2"
+                >
+                </v-textarea>
+                <v-btn
+                  :disabled="!valid"
+                  color="#A5C13D"
+                  class="mb-2 text-capitalize font-weight-bold"
+                  height="40px"
+                  :loading="loading"
+                  @click.prevent="validate"
+                  block
+                  v-bind="btnStyle"
+                >
+                  Update
+                </v-btn>
+              </v-row>
+            </v-form>
+            <v-alert
+              type="error"
+              dense
               text
-              :loading="deleteLoading"
-              @click="deleteSession(deleteItem)"
-              >Agree</v-btn
+              v-for="(item, key) in errors"
+              :key="`error${key}`"
             >
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </v-row>
-    <v-fab-transition>
-      <v-btn
-        v-bind="btnStyle"
-        color="primary"
-        style="bottom: 70px"
-        elevation="5"
-        dark
-        bottom
-        right
-        fixed
-        fab
-        v-if="patient"
-        @click="openDialog()"
+              {{ item }}
+            </v-alert>
+          </v-col>
+          <v-col md="6" cols="12">
+            <div class="d-flex justify-center align-center title primary--text">
+              {{ patient.created_at }}
+            </div>
+          </v-col>
+        </v-row>
+
+        <v-snackbar left color="success" v-model="snackbar" :timeout="4000">
+          Patient updated successfully
+          <v-btn icon @click="snackbar = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-snackbar>
+      </v-card-text>
+      <v-card-text v-if="!patient && !getPatientLoading">
+        <v-alert type="error" text border="left">
+          {{ msg || "something wrong" }}
+        </v-alert>
+      </v-card-text>
+      <v-card-title
+        class="font-weight-bold text-capitalize mt-10"
+        v-if="patient && !getPatientLoading"
+        >{{ `${patient.name} Sessions` }}</v-card-title
       >
-        <v-icon class="display-2 font-weight-bold">mdi-plus</v-icon>
-      </v-btn>
-    </v-fab-transition>
+      <v-card-text v-if="patient && !getPatientLoading">
+        <v-data-table
+          :headers="headers"
+          :items="sessions"
+          sort-by="id"
+          :must-sort="mustSort"
+          :options.sync="options"
+          class="elevation-0"
+          :server-items-length="meta.total || 0"
+          :loading="getSessionLoading"
+        >
+          <template v-slot:item.id="{ item }">
+            <v-btn @click="openDialog(item.id)" color="primary" text>{{
+              item.id
+            }}</v-btn>
+          </template>
+          <template v-slot:item.actions="{ item }">
+            <div class="d-flex">
+              <v-btn
+                v-bind="btnStyle"
+                x-small
+                color="#A5C13D"
+                class="mr-2"
+                :class="{
+                  'white--text': !btnStyle.outlined && !btnStyle.text
+                }"
+                @click="openDialog(item.id)"
+                fab
+              >
+                <v-icon> mdi-pencil </v-icon>
+              </v-btn>
+              <v-btn
+                @click="deleteItem = item"
+                x-small
+                color="red"
+                fab
+                v-bind="btnStyle"
+                :class="{
+                  'white--text': !btnStyle.outlined && !btnStyle.text
+                }"
+              >
+                <v-icon> mdi-delete </v-icon>
+              </v-btn>
+            </div>
+          </template>
+          <template v-slot:no-data>
+            <span class="text-capitalize font-weight-bold"
+              >No Session found</span
+            >
+            <v-btn
+              color="primary"
+              class="text-capitalize mx-1"
+              text
+              @click="openDialog()"
+            >
+              <v-icon left>mdi-plus</v-icon>
+              create session</v-btn
+            >
+          </template>
+        </v-data-table>
+      </v-card-text>
+      <v-row justify="center">
+        <v-dialog :value="true" v-if="deleteItem" persistent max-width="290">
+          <v-card :loading="deleteLoading">
+            <v-card-title class="headline">Delete Session</v-card-title>
+            <v-card-text
+              >Are you sure you want delete this session? by clicking agree the
+              session will removed and their relations</v-card-text
+            >
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="red darken-1" text @click="deleteItem = null"
+                >Disagree</v-btn
+              >
+              <v-btn
+                color="green darken-1"
+                text
+                :loading="deleteLoading"
+                @click="deleteSession(deleteItem)"
+                >Agree</v-btn
+              >
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-row>
+      <v-fab-transition>
+        <v-btn
+          v-bind="btnStyle"
+          color="primary"
+          style="bottom: 70px"
+          elevation="5"
+          dark
+          bottom
+          right
+          fixed
+          fab
+          v-if="patient"
+          @click="openDialog()"
+        >
+          <v-icon class="display-2 font-weight-bold">mdi-plus</v-icon>
+        </v-btn>
+      </v-fab-transition>
+    </div>
     <create
       v-model="dialog"
       @updateSession="

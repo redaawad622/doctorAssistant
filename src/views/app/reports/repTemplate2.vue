@@ -59,9 +59,8 @@
         dense
         class="rounded-lg"
         flat
-        dark
-        color="#94C3B6"
         v-if="currentUser"
+        style="border:2px solid #94C3B6"
       >
         <div class="text-center title pt-1 text-capitalize font-bold">
           {{ currentUser.info.enName }} (Ophthalmologist)
@@ -114,7 +113,7 @@
         dense
         class="rounded-lg mt-1 "
         flat
-        color="#F4B896"
+        style="border:2px solid #F4B896"
         v-if="patient"
       >
         <div class="text-center title py-1 text-capitalize" v-if="patient">
