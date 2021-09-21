@@ -48,18 +48,17 @@
                     dense
                   ></v-select>
                 </v-col>
-                <v-textarea
+                <v-combobox
                   v-model="form.address"
                   label="Address"
                   required
                   v-bind="inputStyle"
                   clearable
                   dense
-                  auto-grow
-                  no-resize
                   rows="2"
-                >
-                </v-textarea>
+                  :items="patientAddress"
+                  item-text="address"
+                ></v-combobox>
                 <v-btn
                   :disabled="!valid"
                   color="#A5C13D"
@@ -291,6 +290,9 @@ export default {
     },
     btnStyle() {
       return this.$store.getters.btnStyle;
+    },
+    patientAddress() {
+      return this.$store.getters[`${PATIENTS_NAMESPACE}/patientAddress`];
     }
   },
   created() {

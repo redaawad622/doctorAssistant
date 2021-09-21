@@ -14,6 +14,8 @@
         deletable-chips
         full-width
         open-on-clear
+        :search-input.sync="hiSearchInput"
+        @change="hiSearchInput = ''"
       >
       </v-combobox>
       <v-checkbox
@@ -113,7 +115,8 @@ export default {
   },
   data() {
     return {
-      loading: false
+      loading: false,
+      hiSearchInput: ""
     };
   },
   created() {

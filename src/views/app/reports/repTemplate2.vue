@@ -113,7 +113,7 @@
         dense
         class="rounded-lg mt-1 "
         flat
-        style="border:2px solid #F4B896"
+        style="border:2px solid #ec6112"
         v-if="patient"
       >
         <div class="text-center title py-1 text-capitalize" v-if="patient">
@@ -201,7 +201,7 @@
               <v-chip small class="mr-0">
                 {{ session.examination.UC_VA_R }}
               </v-chip>
-              <v-icon small color="#F4B896" v-if="session.examination.BC_VA_R">
+              <v-icon small color="#ec6112" v-if="session.examination.BC_VA_R">
                 mdi-arrow-right
               </v-icon>
               <v-chip small v-if="session.examination.BC_VA_R">
@@ -216,7 +216,7 @@
               <v-chip small class="mr-0">
                 {{ session.examination.UC_VA_L }}
               </v-chip>
-              <v-icon small color="#F4B896" v-if="session.examination.BC_VA_L">
+              <v-icon small color="#ec6112" v-if="session.examination.BC_VA_L">
                 mdi-arrow-right
               </v-icon>
               <v-chip small v-if="session.examination.BC_VA_L">
@@ -348,7 +348,7 @@ p {
 }
 
 .fontColor {
-  color: #f4b896;
+  color: #ec6112;
   font-family: "Josefin Sans", sans-serif !important;
 }
 .left {

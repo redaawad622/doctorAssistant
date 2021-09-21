@@ -36,7 +36,7 @@
                <v-col cols="6" class="py-0"><span :style="`font-size:${14*font2}px`">Age: {{ patientData.age }}</span></v-col>
                <v-col cols="6" class="py-0"><span :style="`font-size:${14*font2}px`">Date: {{ patientData.selectedDate }}</span></v-col>
                <v-col cols="6" class="py-0"><span :style="`font-size:${14*font2}px`">number: {{ session.id }}</span></v-col>
-               <v-col v-if="session.diagnosis.length>0" cols="12" class="py-0"><span :style="`font-size:${14*font2}px`">Diagnosis: <template v-for="di in session.diagnosis">{{ di.diagnosis+" ," }}</template></span></v-col>
+               <v-col v-if="session.diagnosis.length>0" cols="12" class="py-0"><span :style="`font-size:${14*font2}px`">Diagnosis: <template v-for="(di,k) in session.diagnosis">{{ di.diagnosis }} <template v-if="k+1 <session.diagnosis.length">" ,"</template></template></span></v-col>
 
             </v-row>
 			</div>
@@ -71,7 +71,7 @@
 </template>
 
 <script>
-   import { AUTH_NAMESPACE, SESSION_NAMESPACE } from '../../store/modules/namespaces';
+   import { AUTH_NAMESPACE, PATIENT_NAMESPACE, SESSION_NAMESPACE } from '../../store/modules/namespaces';
    import med from './priscComponent/med';
    import req from './priscComponent/req';
    import glass from './priscComponent/glass';
@@ -146,7 +146,12 @@
 				return this.$store.getters[`${SESSION_NAMESPACE}/session`]
          },
          patientData(){
-            return this.session.userData
+            let $userData=this.session.userData;
+            if(!$userData.name)
+            {
+               $userData =this.$store.getters[`${PATIENT_NAMESPACE}/patient`]
+            }
+            return this.session.userData;
          }
          
 		}

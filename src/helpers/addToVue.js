@@ -1,5 +1,5 @@
 import { getItem } from './storage';
-import { ipcRenderer } from 'electron';
+//import { ipcRenderer } from 'electron';
 export const addToVueProto = function(Vue) {
 	const appUrl = getItem('url');
 	const storagePath = appUrl + '/DA_APP/storage/app/public';
@@ -34,9 +34,14 @@ export const addToVueProto = function(Vue) {
 		return value;
 	};
 	Vue.prototype.$reloadPage = function() {
-		ipcRenderer.send('refr');
+		
+		//ipcRenderer.send('refr');
+		window.location.reload();
 	};
 	Vue.prototype.$printing = function() {
-		ipcRenderer.send('printing');
+		//ipcRenderer.send('printing');
+		window.scrollTo(0, 0);
+
+		window.print();
 	};
 };

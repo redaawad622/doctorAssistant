@@ -33,8 +33,8 @@ export default {
 			requests: [],
 			diagnosis: [],
 			userData: {
-				name: 'reda',
-				gender: 'male',
+				name: '',
+				gender: '',
 				age: '',
 				number: '',
 				selectedDate: new Date().toISOString().substr(0, 10)
@@ -178,9 +178,7 @@ export default {
 			state.sessionData.userData[payload.name] = payload.value;
 		},
 		glass(state, payload) {
-			//console.log("before",payload,state.sessionData.glass[payload.name])
 			state.sessionData.glass[payload.name] = payload.value;
-		//	console.log("after",payload,state.sessionData.glass[payload.name])
 
 		},
 		updatePercentage(state, payload) {
@@ -216,8 +214,8 @@ export default {
 				requests: [],
 				diagnosis: [],
 				userData: {
-					name: 'reda',
-					gender: 'male',
+					name: '',
+					gender: '',
 					age: '',
 					number: '',
 					selectedDate: new Date().toISOString().substr(0, 10)
@@ -259,8 +257,13 @@ export default {
 					});
 			});
 		},
-		saveSession({ commit, state }, payload) {
+		saveSession({ commit, state,rootGetters  }, payload) {
+			
+			if(!state.sessionData.userData.name){
+				commit('userData',{name:'name',value:rootGetters['patient/patient'].name})
+			}
 			return new Promise((resolve, reject) => {
+			
 				let formData = objectToFormData(state.sessionData);
 				formData.append('patient_id', payload.patient_id);
 				window.axios
@@ -287,8 +290,11 @@ export default {
 					});
 			});
 		},
-		updateSession({ commit, state }, payload) {
+		updateSession({ commit, state,rootGetters }, payload) {
 			return new Promise((resolve, reject) => {
+				if(!state.sessionData.userData.name){
+					commit('userData',{name:'name',value:rootGetters['patient/patient'].name})
+				}
 				let formData = objectToFormData(state.sessionData);
 				formData.append('patient_id', payload.patient_id);
 				formData.append('_method', 'put');

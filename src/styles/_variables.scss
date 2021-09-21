@@ -135,5 +135,8 @@ thead {
 	.printPres,.hardHide {
 		display: none !important;
 	  }
+	 .v-dialog--scrollable > .v-card > .presc.v-card__text{
+		  overflow-y: hidden !important;
+	  }
 	
 }

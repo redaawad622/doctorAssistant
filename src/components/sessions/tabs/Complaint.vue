@@ -16,6 +16,8 @@
         item-value="content"
         open-on-clear
         v-bind="inputStyle"
+        :search-input.sync="comSearchInput"
+        @change="comSearchInput = ''"
       >
       </v-combobox>
       <v-checkbox
@@ -118,7 +120,8 @@ export default {
   },
   data() {
     return {
-      loading: false
+      loading: false,
+      comSearchInput: ""
     };
   },
   created() {

@@ -186,7 +186,7 @@ export default {
           val = "";
           break;
       }
-
+      this.saveSession();
       this.$store.commit(`${SESSION_NAMESPACE}/updatePrint`, val);
     },
     validate() {
@@ -234,9 +234,6 @@ export default {
             this.saveSessionLoading = false;
           });
       }
-    },
-    generateReport() {
-      console.log("GEC");
     }
   },
   mounted() {

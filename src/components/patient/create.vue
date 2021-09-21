@@ -49,18 +49,17 @@
                   dense
                 ></v-select>
               </v-col>
-              <v-textarea
+              <v-combobox
                 v-model="form.address"
                 label="Address"
                 required
                 v-bind="inputStyle"
                 clearable
                 dense
-                auto-grow
-                no-resize
                 rows="2"
-              >
-              </v-textarea>
+                :items="patientAddress"
+                item-text="address"
+              ></v-combobox>
             </v-row>
           </v-form>
           <v-alert
@@ -204,6 +203,9 @@ export default {
     currentUser() {
       return this.$store.getters[`${AUTH_NAMESPACE}/currentUser`];
     },
+    patientAddress() {
+      return this.$store.getters[`${PATIENTS_NAMESPACE}/patientAddress`];
+    },
     meta() {
       return this.$store.getters[`${PATIENTS_NAMESPACE}/meta`];
     },
@@ -316,6 +318,11 @@ export default {
         }
       }
     }
+  },
+  created() {
+    this.$store.dispatch(`${PATIENTS_NAMESPACE}/getPatientsAddress`, {
+      getAddress: 1
+    });
   }
 };
 </script>
