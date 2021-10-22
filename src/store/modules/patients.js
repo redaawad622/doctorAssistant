@@ -54,7 +54,7 @@ export default {
       state.patients.splice(payload, 1);
     },
     updatePatientAddress(state, payload) {
-      state.patientAddress = payload;
+      state.patientAddress = payload.map((add)=>add.address);
       if (payload && payload.length > 0) {
         setItem("patientAddress", payload);
       }

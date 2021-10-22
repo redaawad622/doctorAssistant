@@ -2,11 +2,19 @@
   <div>
     <ul v-if="medicines">
       <li v-for="(med, index) in medicines" :key="`prisMed${index}`">
-        <span class="med body-1" :style="`font-size:${16 * font}px !important`"
+        <span
+          class="med body-1"
+          :style="
+            `font-size:${16 *
+              font}px !important;font-weight:${fontWeight} !important`
+          "
           ><pre>{{ med.medicine }}</pre></span
         ><span
           class="dose text-center subtitle-1"
-          :style="`font-size:${14 * font}px !important`"
+          :style="
+            `font-size:${14 *
+              font}px !important;font-weight:${fontWeight} !important`
+          "
           ><pre>{{ med.dose }}</pre></span
         >
       </li>
@@ -22,6 +30,10 @@ export default {
     font: {
       type: Number,
       default: 1
+    },
+    fontWeight: {
+      type: String,
+      default: "normal"
     }
   },
   computed: {

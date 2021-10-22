@@ -113,7 +113,7 @@
         dense
         class="rounded-lg mt-1 "
         flat
-        style="border:2px solid #ec6112"
+        style="border:2px solid #30519e"
         v-if="patient"
       >
         <div class="text-center title py-1 text-capitalize" v-if="patient">
@@ -348,7 +348,7 @@ p {
 }
 
 .fontColor {
-  color: #ec6112;
+  color: #18652d;
   font-family: "Josefin Sans", sans-serif !important;
 }
 .left {

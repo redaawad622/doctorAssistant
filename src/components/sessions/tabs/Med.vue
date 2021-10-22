@@ -374,10 +374,14 @@ export default {
     }
   },
   mounted() {
-    if (!this.$store.getters[`${SESSION_NAMESPACE}/isUpdate`]) {
+    if (
+      this.$store.getters[`${SESSION_NAMESPACE}/isNew`] ||
+      !this.name ||
+      !this.age
+    ) {
       const patient = this.$store.getters[`${PATIENT_NAMESPACE}/patient`];
-      this.name = patient.name;
-      this.age = patient.age;
+      this.name = this.name || patient.name;
+      this.age = this.age || patient.age;
       this.gender = patient.gender;
     }
   },

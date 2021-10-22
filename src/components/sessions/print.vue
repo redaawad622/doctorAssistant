@@ -48,7 +48,36 @@
             class="pa-0 mx-3"
             title="quick theming"
           ></v-overflow-btn>
-
+          <v-overflow-btn
+            :items="fontWeights"
+            label="font weight"
+            hide-details
+            v-model="prStyle.fontWeight"
+            class="pa-0 mx-3"
+            title="font weight"
+          ></v-overflow-btn>
+          <v-text-field
+            style="max-width:120px"
+            hide-details
+            class="pa-0 mx-3"
+            outlined
+            dense
+            type="number"
+            v-model="prStyle.paddingL"
+            label="padding left"
+            title="padding left"
+          ></v-text-field>
+          <v-text-field
+            style="max-width:120px"
+            hide-details
+            class="pa-0 mx-3"
+            outlined
+            dense
+            type="number"
+            v-model="prStyle.paddingR"
+            label="padding right"
+            title="padding right"
+          ></v-text-field>
           <template>
             <v-spacer></v-spacer>
 
@@ -132,7 +161,9 @@
           contenteditable
           class="presc fill-height"
           :class="{ 'A5 elevation-10 my-auto': preview }"
-          :style="`background-color:${prStyle.background};`"
+          :style="
+            `background-color:${prStyle.background}; padding-left:${prStyle.paddingL}px;padding-right:${prStyle.paddingR}px`
+          "
         >
           <presc1
             v-if="prStyle.temp === 'template 1'"
@@ -224,7 +255,7 @@ export default {
         "black invert",
         "grey"
       ],
-
+      fontWeights: ["lighter", "normal", "bold", "bolder"],
       tab: 1,
       color: false,
       color2: false,
@@ -243,7 +274,10 @@ export default {
         borderColor: "#3272ab",
         background: "#fff",
         fontFamily: "Roboto,sans-serif",
-        theme: "default"
+        theme: "default",
+        fontWeight: "normal",
+        paddingL: 20,
+        paddingR: 20
       }
     };
   },
@@ -282,7 +316,10 @@ export default {
         borderColor: "#3272abff",
         background: "#fff",
         fontFamily: "Roboto,sans-serif",
-        theme: "default"
+        theme: "default",
+        fontWeight: "normal",
+        paddingL: 20,
+        paddingR: 20
       };
       setItem("prStyle", this.prStyle);
     },
@@ -526,8 +563,9 @@ export default {
     display: none;
   }
   .v-dialog > .v-card > .presc.v-card__text {
-    padding: 24px !important;
     zoom: 0.9;
+    padding-top: 20px;
+    padding-bottom: 20px;
   }
   @page {
     margin: 0;

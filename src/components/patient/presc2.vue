@@ -18,7 +18,7 @@
             <div class="right" :style="`font-size:${14*font1}px;color:${color1}`">
                 <h4>دكتور</h4>
                 <p v-if="doctorInfo.arName" :style="`font-size:${14*font1+3.3}px`" >{{doctorInfo.arName}}</p>
-                <p  v-if="doctorInfo.specializationAr" ><pre>{{doctorInfo.specializationAr}}</pre></p>
+                <p  v-if="doctorInfo.specializationAr" style="word-spacing:-6px" ><pre>{{doctorInfo.specializationAr}}</pre></p>
             </div>
             </div>
 			</div>
@@ -36,7 +36,7 @@
                <v-col cols="6" class="py-0"><span :style="`font-size:${14*font2}px`">Age: {{ patientData.age }}</span></v-col>
                <v-col cols="6" class="py-0"><span :style="`font-size:${14*font2}px`">Date: {{ patientData.selectedDate }}</span></v-col>
                <v-col cols="6" class="py-0"><span :style="`font-size:${14*font2}px`">number: {{ session.id }}</span></v-col>
-               <v-col v-if="session.diagnosis.length>0" cols="12" class="py-0"><span :style="`font-size:${14*font2}px`">Diagnosis: <template v-for="(di,k) in session.diagnosis">{{ di.diagnosis }} <template v-if="k+1 <session.diagnosis.length">" ,"</template></template></span></v-col>
+               <v-col v-if="session.diagnosis.length>0" cols="12" class="py-0"><span :style="`font-size:${14*font2}px`">Diagnosis: <template v-for="(di,k) in session.diagnosis">{{ di.diagnosis }} <template v-if="k+1 <session.diagnosis.length"> , </template></template></span></v-col>
 
             </v-row>
 			</div>
